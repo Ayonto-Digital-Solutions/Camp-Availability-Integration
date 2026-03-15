@@ -1,26 +1,27 @@
 /**
  * Status Display Styles — Frontend (Template-Farben)
  *
- * Uses the site's Elementor/theme color system:
+ * Dark theme matching the site design:
  * Primary: #B19E63 (Gold), Secondary: #54595F, Text: #F8F8F8, Accent: #25282B
  *
  * @package AS_Camp_Availability_Integration
  * @since   1.3.59
- * @updated 1.3.74
+ * @updated 1.3.75
  */
 
 /* ── Status Box Base ─────────────────────────────────────────────── */
 
 .as-cai-status-box {
-	background: #fff;
+	background: rgba(255, 255, 255, 0.95);
 	border-radius: 14px;
 	padding: 24px;
 	margin: 20px 0;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
-	border: 1px solid #e4e4e7;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	border: none;
 	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 	font-family: inherit;
 	-webkit-font-smoothing: antialiased;
+	color: #25282B;
 }
 
 .as-cai-status-box.updating {
@@ -59,6 +60,7 @@
 .availability-main {
 	font-size: 16px;
 	margin-bottom: 10px;
+	color: #25282B;
 }
 
 .availability-main strong {
@@ -78,7 +80,7 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 4px;
-	padding: 3px 10px;
+	padding: 4px 12px;
 	border-radius: 6px;
 	font-size: 12px;
 	font-weight: 600;
@@ -86,12 +88,12 @@
 }
 
 .reserved-badge {
-	background: rgba(177, 158, 99, 0.12);
+	background: rgba(177, 158, 99, 0.15);
 	color: #8a7a45;
 }
 
 .sold-badge {
-	background: rgba(177, 158, 99, 0.12);
+	background: rgba(177, 158, 99, 0.15);
 	color: #8a7a45;
 }
 
@@ -103,7 +105,7 @@
 
 .progress-bar {
 	height: 8px;
-	background: #e4e4e7;
+	background: #e0ddd5;
 	border-radius: 4px;
 	overflow: hidden;
 	display: flex;
@@ -117,7 +119,7 @@
 }
 
 .progress-reserved {
-	background: rgba(177, 158, 99, 0.5);
+	background: rgba(177, 158, 99, 0.4);
 	transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -135,8 +137,8 @@
 /* ── Reservation Timer ───────────────────────────────────────────── */
 
 .reservation-timer {
-	background: rgba(177, 158, 99, 0.06);
-	border: 1px solid rgba(177, 158, 99, 0.15);
+	background: rgba(177, 158, 99, 0.08);
+	border: 1px solid rgba(177, 158, 99, 0.2);
 	border-left: 3px solid #B19E63;
 	padding: 12px 14px;
 	border-radius: 8px;
@@ -168,8 +170,8 @@
 	align-items: center;
 	gap: 8px;
 	padding: 10px 14px;
-	background: rgba(177, 158, 99, 0.08);
-	border: 1px solid rgba(177, 158, 99, 0.15);
+	background: rgba(177, 158, 99, 0.1);
+	border: 1px solid rgba(177, 158, 99, 0.2);
 	border-radius: 8px;
 	font-weight: 600;
 	font-size: 13px;
@@ -199,12 +201,16 @@
 	color: #B19E63;
 }
 
+.status-available .status-icon {
+	color: #B19E63;
+}
+
 .status-limited {
 	border-left: 3px solid #B19E63;
 }
 
 .status-limited .status-title {
-	color: #8a7a45;
+	color: #96854e;
 }
 
 .status-critical {
@@ -217,8 +223,8 @@
 }
 
 @keyframes as-cai-subtle-pulse {
-	0%, 100% { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); }
-	50% { box-shadow: 0 2px 12px rgba(196, 67, 62, 0.15); }
+	0%, 100% { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); }
+	50% { box-shadow: 0 2px 16px rgba(196, 67, 62, 0.2); }
 }
 
 .status-reserved-full {
@@ -242,7 +248,7 @@
 	color: #c4433e;
 }
 
-/* Hide "Parzelle auswählen" button when sold out (CSS sibling selector) */
+/* Hide "Parzelle auswählen" button when sold out */
 .status-sold-out ~ .stachesepl-single-add-to-cart-button-wrapper,
 .status-sold-out ~ .stachesepl-add-to-cart-button-root {
 	display: none !important;
@@ -257,7 +263,7 @@
 .as-cai-waitlist-button,
 .as-cai-notify-button,
 .as-cai-refresh-button {
-	padding: 9px 18px;
+	padding: 10px 20px;
 	border: none;
 	border-radius: 8px;
 	font-size: 14px;
@@ -274,7 +280,7 @@
 .as-cai-notify-button:hover,
 .as-cai-refresh-button:hover {
 	transform: translateY(-1px);
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .as-cai-waitlist-button:active,
@@ -284,12 +290,12 @@
 }
 
 .as-cai-waitlist-button {
-	background: #B19E63;
+	background: rgba(177, 158, 99, 0.85);
 	color: #fff;
 }
 
 .as-cai-waitlist-button:hover {
-	background: #9d8c55;
+	background: #B19E63;
 }
 
 .as-cai-notify-button {
@@ -302,21 +308,22 @@
 }
 
 .as-cai-refresh-button {
-	background: white;
+	background: transparent;
 	color: #54595F;
 	border: 1px solid #d4d4d8;
 }
 
 .as-cai-refresh-button:hover {
-	background: #fafafa;
-	border-color: #a1a1aa;
+	background: rgba(0, 0, 0, 0.03);
+	border-color: #B19E63;
+	color: #25282B;
 }
 
 /* ── Status Meta ─────────────────────────────────────────────────── */
 
 .status-meta {
 	padding-top: 10px;
-	border-top: 1px solid #e4e4e7;
+	border-top: 1px solid rgba(0, 0, 0, 0.06);
 	font-size: 11px;
 	color: #a1a1aa;
 }
@@ -336,11 +343,11 @@
 	position: fixed;
 	top: 20px;
 	right: 20px;
-	padding: 12px 18px;
+	padding: 14px 20px;
 	background: #25282B;
 	color: #F8F8F8;
 	border-radius: 10px;
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 	z-index: 9999;
 	opacity: 0;
 	transform: translateX(120%);

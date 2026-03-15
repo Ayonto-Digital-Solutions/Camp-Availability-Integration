@@ -7,6 +7,22 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.3.75] - 2026-03-15
+
+### Fixed
+- **Verfügbarkeits-Zählung: Seat Plan Daten als primäre Quelle**
+  - Neue Methode `count_from_seat_plan()` liest direkt aus Stachethemes Seat Plan Objekten
+  - Zählt Seats nach ihrem tatsächlichen Status (available/sold-out/taken)
+  - Erstattete Bestellungen automatisch korrekt — Stachethemes setzt den Status zurück
+  - Behebt endgültig: Parzelle 97 als "nicht verfügbar" obwohl im Planner frei
+
+### Changed
+- **Status-Box Design an Website-Template angepasst**
+  - Gold-Akzente `#B19E63` passend zum dunklen Template
+  - Progress-Bar, Badges, Buttons, Warteliste-Button in Gold
+  - Toast Notifications im dunklen Style (`#25282B` Background)
+  - Subtile Schatten und Border statt harte weiße Kanten
+
 ## [1.3.74] - 2026-03-15
 
 ### Fixed

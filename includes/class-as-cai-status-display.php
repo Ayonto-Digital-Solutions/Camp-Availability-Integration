@@ -157,37 +157,31 @@ class AS_CAI_Status_Display {
 			return null;
 		}
 
-		// Get stock quantity (managed by WooCommerce).
-		$total_seats = $product->get_stock_quantity();
-		if ( null === $total_seats || $total_seats <= 0 ) {
-			// Fallback: try to get from seat plan data if available.
-			if ( method_exists( $product, 'get_seat_plan_data' ) ) {
-				$seat_data = $product->get_seat_plan_data( 'object' );
-				if ( $seat_data && isset( $seat_data->objects ) && is_array( $seat_data->objects ) ) {
-					$total_seats = count( array_filter( $seat_data->objects, function( $obj ) {
-						return isset( $obj->type ) && 'seat' === $obj->type
-							&& ( ! isset( $obj->status ) || ( 'unavailable' !== $obj->status && 'sold-out' !== $obj->status ) );
-					} ) );
-				}
-			}
-			if ( ! $total_seats || $total_seats <= 0 ) {
+		// ── PRIMARY: Read directly from Stachethemes Seat Plan data ──
+		// This is the single source of truth — it's what the seat map shows.
+		$seat_plan_counts = self::count_from_seat_plan( $product );
+
+		if ( null !== $seat_plan_counts ) {
+			// Seat plan data available — use it directly.
+			$total_seats  = $seat_plan_counts['total'];
+			$sold_seats   = $seat_plan_counts['sold'];
+			$available    = $seat_plan_counts['available'];
+		} else {
+			// ── FALLBACK: Calculate from WooCommerce stock + orders ──
+			$total_seats = $product->get_stock_quantity();
+			if ( null === $total_seats || $total_seats <= 0 ) {
 				$total_seats = 0;
 			}
+
+			// Count sold from orders (only valid statuses).
+			$sold_seats = self::count_sold_seats_accurate( $product_id );
+			if ( 0 === $sold_seats && method_exists( $product, 'get_taken_seats' ) ) {
+				$taken = $product->get_taken_seats();
+				$sold_seats = is_array( $taken ) ? count( $taken ) : 0;
+			}
+			$sold_seats = min( $sold_seats, $total_seats );
+			$available  = max( 0, $total_seats - $sold_seats );
 		}
-
-		// Count sold seats via WooCommerce orders — only valid statuses.
-		// Stachethemes' get_taken_seats() counts ALL statuses including refunded
-		// and cancelled, leading to sold > total. We count accurately ourselves.
-		$sold_seats = self::count_sold_seats_accurate( $product_id );
-
-		// Fallback: if our count returns 0, try Stachethemes but cap at total.
-		if ( 0 === $sold_seats && method_exists( $product, 'get_taken_seats' ) ) {
-			$taken = $product->get_taken_seats();
-			$sold_seats = is_array( $taken ) ? count( $taken ) : 0;
-		}
-
-		// Safety: never exceed total seats.
-		$sold_seats = min( $sold_seats, $total_seats );
 
 		// Count reserved seats (in carts) from our reservation system.
 		$reserved_count = 0;
@@ -196,12 +190,12 @@ class AS_CAI_Status_Display {
 			$reserved_count = $db->get_reserved_stock_for_product( $product_id );
 		}
 
-		// Also count Stachethemes seat planner transient-based reservations.
+		// Also count Stachethemes transient-based reservations.
 		$stache_reserved = self::count_stachethemes_reserved_seats( $product_id );
 		$reserved_count = max( $reserved_count, $stache_reserved );
 
-		// Calculate available seats.
-		$available    = max( 0, $total_seats - $sold_seats - $reserved_count );
+		// Subtract reservations from available (but not below 0).
+		$available    = max( 0, $available - $reserved_count );
 		$percent_free = ( $total_seats > 0 ) ? ( $available / $total_seats ) * 100 : 0;
 
 		// Determine status level.
@@ -239,6 +233,71 @@ class AS_CAI_Status_Display {
 	 * @param int $product_id Product ID.
 	 * @return int Number of reserved seats.
 	 */
+	/**
+	 * Count seats directly from Stachethemes Seat Plan data.
+	 *
+	 * This is the primary source of truth — it reads the same data that
+	 * the seat map uses to render available/sold seats. Refunded orders
+	 * are automatically excluded because Stachethemes releases the seat
+	 * back to "available" on refund.
+	 *
+	 * @since 1.3.75
+	 * @param WC_Product $product The auditorium product.
+	 * @return array|null Array with total/sold/available counts, or null if unavailable.
+	 */
+	private static function count_from_seat_plan( $product ) {
+		if ( ! method_exists( $product, 'get_seat_plan_data' ) ) {
+			return null;
+		}
+
+		$seat_data = $product->get_seat_plan_data( 'object' );
+		if ( ! $seat_data || ! isset( $seat_data->objects ) || ! is_array( $seat_data->objects ) ) {
+			return null;
+		}
+
+		$total     = 0;
+		$sold      = 0;
+		$available = 0;
+
+		// Statuses that count as "sold" / "taken" in Stachethemes.
+		$sold_statuses = array( 'sold-out', 'sold', 'taken', 'booked' );
+
+		// Statuses that count as permanently unavailable (not for sale).
+		$excluded_statuses = array( 'unavailable', 'disabled' );
+
+		foreach ( $seat_data->objects as $obj ) {
+			// Only count seat-type objects (not decorations, labels, etc.).
+			if ( ! isset( $obj->type ) || 'seat' !== $obj->type ) {
+				continue;
+			}
+
+			$seat_status = isset( $obj->status ) ? strtolower( (string) $obj->status ) : 'available';
+
+			// Skip permanently unavailable seats.
+			if ( in_array( $seat_status, $excluded_statuses, true ) ) {
+				continue;
+			}
+
+			$total++;
+
+			if ( in_array( $seat_status, $sold_statuses, true ) ) {
+				$sold++;
+			} else {
+				$available++;
+			}
+		}
+
+		if ( 0 === $total ) {
+			return null;
+		}
+
+		return array(
+			'total'     => $total,
+			'sold'      => $sold,
+			'available' => $available,
+		);
+	}
+
 	private static function count_stachethemes_reserved_seats( $product_id ) {
 		global $wpdb;
 

@@ -1,6 +1,6 @@
 # Camp Availability Integration
 
-**Version:** 1.3.74  
+**Version:** 1.3.75  
 **Author:** Marc Mirschel  
 **Author URI:** https://marc.mirschel.biz  
 **Plugin URI:** https://ayon.to
@@ -241,7 +241,7 @@ Für Support und Fragen:
 
 Siehe **CHANGELOG.md** für die vollständige Versionshistorie oder besuchen Sie **Documentation → Latest Update (UPDATE.md)** im Admin-Bereich für die neuesten Änderungen.
 
-### Aktuelle Version: 1.3.74
+### Aktuelle Version: 1.3.75
 - Koalaapps "Product Availability Scheduler" ist nicht mehr erforderlich
 - Eigenes Availability-System mit Hook-Priority 5
 - Optimierte Abhängigkeiten

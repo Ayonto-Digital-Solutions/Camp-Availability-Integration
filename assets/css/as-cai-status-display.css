@@ -6,22 +6,22 @@
  *
  * @package AS_Camp_Availability_Integration
  * @since   1.3.59
- * @updated 1.3.75
+ * @updated 1.3.77
  */
 
 /* ── Status Box Base ─────────────────────────────────────────────── */
 
 .as-cai-status-box {
-	background: rgba(255, 255, 255, 0.95);
+	background: #25282B;
 	border-radius: 14px;
 	padding: 24px;
 	margin: 20px 0;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-	border: none;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+	border: 1px solid rgba(177, 158, 99, 0.15);
 	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 	font-family: inherit;
 	-webkit-font-smoothing: antialiased;
-	color: #25282B;
+	color: #F8F8F8;
 }
 
 .as-cai-status-box.updating {
@@ -47,7 +47,7 @@
 	font-size: 18px;
 	font-weight: 700;
 	margin: 0;
-	color: #25282B;
+	color: #F8F8F8;
 	letter-spacing: -0.02em;
 }
 
@@ -60,12 +60,12 @@
 .availability-main {
 	font-size: 16px;
 	margin-bottom: 10px;
-	color: #25282B;
+	color: #F8F8F8;
 }
 
 .availability-main strong {
 	font-weight: 700;
-	color: #25282B;
+	color: #F8F8F8;
 }
 
 .availability-breakdown {
@@ -88,13 +88,13 @@
 }
 
 .reserved-badge {
-	background: rgba(177, 158, 99, 0.15);
-	color: #8a7a45;
+	background: rgba(177, 158, 99, 0.2);
+	color: #B19E63;
 }
 
 .sold-badge {
-	background: rgba(177, 158, 99, 0.15);
-	color: #8a7a45;
+	background: rgba(177, 158, 99, 0.2);
+	color: #B19E63;
 }
 
 /* ── Progress Bar ────────────────────────────────────────────────── */
@@ -105,7 +105,7 @@
 
 .progress-bar {
 	height: 8px;
-	background: #e0ddd5;
+	background: rgba(255, 255, 255, 0.1);
 	border-radius: 4px;
 	overflow: hidden;
 	display: flex;
@@ -127,7 +127,7 @@
 	display: flex;
 	justify-content: space-between;
 	font-size: 12px;
-	color: #54595F;
+	color: rgba(248, 248, 248, 0.6);
 }
 
 .label-available {
@@ -137,8 +137,8 @@
 /* ── Reservation Timer ───────────────────────────────────────────── */
 
 .reservation-timer {
-	background: rgba(177, 158, 99, 0.08);
-	border: 1px solid rgba(177, 158, 99, 0.2);
+	background: rgba(177, 158, 99, 0.1);
+	border: 1px solid rgba(177, 158, 99, 0.25);
 	border-left: 3px solid #B19E63;
 	padding: 12px 14px;
 	border-radius: 8px;
@@ -148,7 +148,7 @@
 .timer-label {
 	display: block;
 	font-size: 12px;
-	color: #54595F;
+	color: rgba(248, 248, 248, 0.6);
 	margin-bottom: 4px;
 }
 
@@ -170,12 +170,12 @@
 	align-items: center;
 	gap: 8px;
 	padding: 10px 14px;
-	background: rgba(177, 158, 99, 0.1);
-	border: 1px solid rgba(177, 158, 99, 0.2);
+	background: rgba(177, 158, 99, 0.12);
+	border: 1px solid rgba(177, 158, 99, 0.25);
 	border-radius: 8px;
 	font-weight: 600;
 	font-size: 13px;
-	color: #8a7a45;
+	color: #B19E63;
 }
 
 .pulse-dot {
@@ -210,7 +210,7 @@
 }
 
 .status-limited .status-title {
-	color: #96854e;
+	color: #B19E63;
 }
 
 .status-critical {
@@ -223,8 +223,8 @@
 }
 
 @keyframes as-cai-subtle-pulse {
-	0%, 100% { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); }
-	50% { box-shadow: 0 2px 16px rgba(196, 67, 62, 0.2); }
+	0%, 100% { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25); }
+	50% { box-shadow: 0 2px 16px rgba(196, 67, 62, 0.35); }
 }
 
 .status-reserved-full {
@@ -232,7 +232,7 @@
 }
 
 .status-reserved-full .status-title {
-	color: #54595F;
+	color: rgba(248, 248, 248, 0.7);
 }
 
 .status-sold-out {
@@ -309,23 +309,23 @@
 
 .as-cai-refresh-button {
 	background: transparent;
-	color: #54595F;
-	border: 1px solid #d4d4d8;
+	color: rgba(248, 248, 248, 0.7);
+	border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .as-cai-refresh-button:hover {
-	background: rgba(0, 0, 0, 0.03);
+	background: rgba(255, 255, 255, 0.05);
 	border-color: #B19E63;
-	color: #25282B;
+	color: #F8F8F8;
 }
 
 /* ── Status Meta ─────────────────────────────────────────────────── */
 
 .status-meta {
 	padding-top: 10px;
-	border-top: 1px solid rgba(0, 0, 0, 0.06);
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
 	font-size: 11px;
-	color: #a1a1aa;
+	color: rgba(248, 248, 248, 0.4);
 }
 
 .auto-refresh-indicator {
@@ -385,35 +385,45 @@
 /* ── Warteliste / Benachrichtigungs-Modal ─────────────────────────── */
 
 .as-cai-modal-overlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 100000;
-	padding: 20px;
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	margin: 0 !important;
+	padding: 20px !important;
+	background: rgba(0, 0, 0, 0) !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	z-index: 999999 !important;
 	transition: background 0.3s ease;
+	box-sizing: border-box !important;
 }
 
 .as-cai-modal-overlay.show {
-	background: rgba(0, 0, 0, 0.6);
+	background: rgba(0, 0, 0, 0.6) !important;
 	backdrop-filter: blur(4px);
 	-webkit-backdrop-filter: blur(4px);
 }
 
 .as-cai-modal {
-	background: #fff;
-	border-radius: 16px;
-	padding: 32px;
-	max-width: 420px;
-	width: 100%;
-	position: relative;
-	text-align: center;
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+	background: #fff !important;
+	border-radius: 16px !important;
+	padding: 32px !important;
+	max-width: 420px !important;
+	width: 100% !important;
+	margin: auto !important;
+	position: relative !important;
+	text-align: center !important;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
 	transform: scale(0.9) translateY(20px);
 	opacity: 0;
 	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	color: #25282B !important;
+	box-sizing: border-box !important;
 }
 
 .as-cai-modal-overlay.show .as-cai-modal {

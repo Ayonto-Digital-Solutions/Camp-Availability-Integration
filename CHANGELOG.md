@@ -7,6 +7,18 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.3.77] - 2026-03-15
+
+### Fixed
+- **Verfügbarkeits-Zählung: WooCommerce Stock als primäre Quelle**
+  - Entfernt fehlerhaften `count_from_seat_plan()` Ansatz
+  - Nutzt `$product->get_stock_quantity()` direkt — Stachethemes synchronisiert Stock automatisch
+  - Erstattete Bestellungen werden korrekt als "frei" gezählt
+
+### Changed
+- **Modal-Positionierung korrigiert** — Modal erscheint nun zentriert statt am Seitenende
+- **Status-Box an dunkles Template-Design angepasst** — Hintergrund `#25282B`, Text `#F8F8F8`, Gold-Akzente
+
 ## [1.3.76] - 2026-03-15
 
 ### Changed

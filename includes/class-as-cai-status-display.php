@@ -157,30 +157,33 @@ class AS_CAI_Status_Display {
 			return null;
 		}
 
-		// ── PRIMARY: Read directly from Stachethemes Seat Plan data ──
-		// This is the single source of truth — it's what the seat map shows.
-		$seat_plan_counts = self::count_from_seat_plan( $product );
+		// ── Use WooCommerce stock as source of truth ──
+		// Stachethemes syncs stock automatically: it decrements on order
+		// and increments on refund/cancel. stock_quantity = available seats.
+		$stock_qty = $product->get_stock_quantity();
 
-		if ( null !== $seat_plan_counts ) {
-			// Seat plan data available — use it directly.
-			$total_seats  = $seat_plan_counts['total'];
-			$sold_seats   = $seat_plan_counts['sold'];
-			$available    = $seat_plan_counts['available'];
-		} else {
-			// ── FALLBACK: Calculate from WooCommerce stock + orders ──
-			$total_seats = $product->get_stock_quantity();
-			if ( null === $total_seats || $total_seats <= 0 ) {
-				$total_seats = 0;
+		// If stock management is enabled and we have a stock value, use it directly.
+		if ( $product->managing_stock() && null !== $stock_qty ) {
+			$available   = max( 0, $stock_qty );
+			// Count sold via orders (valid statuses only).
+			$sold_seats  = self::count_sold_seats_accurate( $product_id );
+			$total_seats = $available + $sold_seats;
+
+			// Sanity: if sold count seems off, try Stachethemes as fallback.
+			if ( 0 === $sold_seats && method_exists( $product, 'get_taken_seats' ) ) {
+				$taken = $product->get_taken_seats();
+				$sold_seats = is_array( $taken ) ? count( $taken ) : 0;
+				$sold_seats = min( $sold_seats, max( 0, $total_seats ) );
 			}
-
-			// Count sold from orders (only valid statuses).
-			$sold_seats = self::count_sold_seats_accurate( $product_id );
+		} else {
+			// No stock management — try to count from orders.
+			$total_seats = 0;
+			$sold_seats  = self::count_sold_seats_accurate( $product_id );
 			if ( 0 === $sold_seats && method_exists( $product, 'get_taken_seats' ) ) {
 				$taken = $product->get_taken_seats();
 				$sold_seats = is_array( $taken ) ? count( $taken ) : 0;
 			}
-			$sold_seats = min( $sold_seats, $total_seats );
-			$available  = max( 0, $total_seats - $sold_seats );
+			$available = max( 0, $total_seats - $sold_seats );
 		}
 
 		// Count reserved seats (in carts) from our reservation system.

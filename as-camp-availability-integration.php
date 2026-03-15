@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       BG Camp Availability Integration
+ * Plugin Name:       Camp Availability Integration
  * Plugin URI:        https://ayon.to
  * Description:       Integriert den Availability Scheduler Timer mit dem Stachethemes Seat Planner für Camp-Buchungen. Steuert die Anzeige des Parzellen-Auswahl-Buttons basierend auf dem Availability Timer. Inkl. 5-Minuten-Warenkorb-Reservierung und modernes Admin-Dashboard.
- * Version:           1.3.59
+ * Version:           1.3.60
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Author:            Marc Mirschel
@@ -41,7 +41,7 @@ final class AS_Camp_Availability_Integration {
      * @since 1.3.58
      * @var string
      */
-    const VERSION = '1.3.59';
+    const VERSION = '1.3.60';
 
 	/**
 	 * Plugin instance.
@@ -241,7 +241,7 @@ final class AS_Camp_Availability_Integration {
 		?>
 		<div class="notice notice-error">
 			<p>
-				<strong><?php esc_html_e( 'BG Camp Availability Integration', 'as-camp-availability-integration' ); ?></strong>
+				<strong><?php esc_html_e( 'Camp Availability Integration', 'as-camp-availability-integration' ); ?></strong>
 			</p>
 			<p>
 				<?php
@@ -272,7 +272,7 @@ final class AS_Camp_Availability_Integration {
 		?>
 		<div class="notice notice-info is-dismissible">
 			<p>
-				<strong><?php esc_html_e( 'BG Camp Availability Integration - Info', 'as-camp-availability-integration' ); ?></strong>
+				<strong><?php esc_html_e( 'Camp Availability Integration - Info', 'as-camp-availability-integration' ); ?></strong>
 			</p>
 			<p>
 				<?php esc_html_e( 'Das Plugin hat jetzt ein eigenes Availability-System!', 'as-camp-availability-integration' ); ?>
@@ -288,7 +288,7 @@ final class AS_Camp_Availability_Integration {
 			</p>
 			<p>
 				<strong><?php esc_html_e( 'Nächste Schritte:', 'as-camp-availability-integration' ); ?></strong><br>
-				<?php esc_html_e( '1. Produkte bearbeiten → Neue "Produkt-Verfügbarkeit (BG Camp)" Meta-Box verwenden', 'as-camp-availability-integration' ); ?><br>
+				<?php esc_html_e( '1. Produkte bearbeiten → Neue "Produkt-Verfügbarkeit (Camp)" Meta-Box verwenden', 'as-camp-availability-integration' ); ?><br>
 				<?php esc_html_e( '2. Start-Datum & Zeit eingeben', 'as-camp-availability-integration' ); ?><br>
 				<?php esc_html_e( '3. Fertig! Der Button wird automatisch gesteuert.', 'as-camp-availability-integration' ); ?>
 			</p>

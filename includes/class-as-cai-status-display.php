@@ -606,7 +606,7 @@ class AS_CAI_Status_Display {
 		$product_name = $product ? $product->get_name() : 'Camp-Parzelle';
 
 		foreach ( $notifications as $notification ) {
-			$subject = 'BG Camp: Parzellen wieder verfügbar!';
+			$subject = 'Ayonto Camp: Parzellen wieder verfügbar!';
 			$message = sprintf(
 				"Gute Nachrichten!\n\nEs sind wieder Parzellen verfügbar für \"%s\".\n\nJetzt buchen: %s\n\n---\nayonto",
 				$product_name,

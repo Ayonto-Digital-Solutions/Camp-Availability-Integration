@@ -189,7 +189,7 @@ curl "https://yoursite.com/wp-admin/admin.php?page=bg-camp-availability&tab=<scr
    ```
 
 2. **Plugin Update** (2 Min)
-   - Plugins → BG Camp Availability Integration → Deaktivieren
+   - Plugins → Camp Availability Integration → Deaktivieren
    - Löschen
    - Upload: `bg-camp-availability-integration-v1_3_58.zip`
    - Aktivieren
@@ -489,7 +489,7 @@ curl -w "@curl-format.txt" -o /dev/null -s https://yoursite.com/
    ```
 
 2. **Plugin Update** (2 Min)
-   - Plugins → BG Camp Availability Integration → Deaktivieren
+   - Plugins → Camp Availability Integration → Deaktivieren
    - Löschen
    - Upload: `bg-camp-availability-integration-v1_3_57.zip`
    - Aktivieren
@@ -1055,7 +1055,7 @@ SHOW VARIABLES LIKE 'max_connections';
 
 **3. Plugin Update:**
 ```
-WordPress Admin → Plugins → BG Camp Availability Integration
+WordPress Admin → Plugins → Camp Availability Integration
 1. Deaktivieren
 2. Löschen  
 3. bg-camp-availability-integration-v1_3_56.zip hochladen
@@ -1076,7 +1076,7 @@ done
 # Erwartung: Nach 10 Requests → 429 Too Many Requests
 
 # Test 3: Admin Dashboard
-# → WooCommerce → BG Camp → Dashboard
+# → WooCommerce → Camp → Dashboard
 # → Stats sollten angezeigt werden
 ```
 
@@ -1668,7 +1668,7 @@ cp -r wp-content/plugins/as-camp-availability-integration \
 
 **2. Plugin aktualisieren:**
 ```
-Dashboard → Plugins → BG Camp Availability Integration
+Dashboard → Plugins → Camp Availability Integration
 → Deaktivieren
 → Löschen
 → Neue ZIP hochladen (v1.3.55)
@@ -1907,7 +1907,7 @@ AS_CAI_Logger::instance()->log( 'LEVEL', 'Message', array() );
 
 **Schritt 1: Plugin deaktivieren (falls aktiv)**
 ```
-WordPress Admin → Plugins → BG Camp Availability Integration → Deaktivieren
+WordPress Admin → Plugins → Camp Availability Integration → Deaktivieren
 ```
 
 **Schritt 2: Neue Version hochladen**
@@ -1918,7 +1918,7 @@ ZIP-Datei: bg-camp-availability-integration-v1_3_54.zip
 
 **Schritt 3: Plugin aktivieren**
 ```
-Plugins → BG Camp Availability Integration → Aktivieren
+Plugins → Camp Availability Integration → Aktivieren
 ```
 
 **Schritt 4: Testen**
@@ -2041,7 +2041,7 @@ private function log( $level, $message, $context = array() ) {
 **Bei Problemen:**
 
 **Email:** kundensupport@zoobro.de  
-**Betreff:** "BG Camp Availability v1.3.54 - HOTFIX Feedback"
+**Betreff:** "Camp Availability v1.3.54 - HOTFIX Feedback"
 
 **Bitte angeben:**
 - WordPress-Version
@@ -2399,7 +2399,7 @@ WordPress Admin → Plugins → Aktualisieren
 
 **1. Altes Plugin deaktivieren:**
 ```
-WordPress Admin → Plugins → BG Camp Availability Integration → Deaktivieren
+WordPress Admin → Plugins → Camp Availability Integration → Deaktivieren
 ```
 
 **2. Neue Version hochladen:**
@@ -2410,7 +2410,7 @@ ZIP-Datei: bg-camp-availability-integration-v1_3_53.zip
 
 **3. Plugin aktivieren:**
 ```
-Plugins → BG Camp Availability Integration → Aktivieren
+Plugins → Camp Availability Integration → Aktivieren
 ```
 
 ---
@@ -2519,7 +2519,7 @@ Keine bekannten Probleme in v1.3.53.
 **Fragen oder Probleme?**
 
 **Email:** kundensupport@zoobro.de  
-**Betreff:** "BG Camp Availability v1.3.53 - [Ihr Thema]"
+**Betreff:** "Camp Availability v1.3.53 - [Ihr Thema]"
 
 **Bitte angeben:**
 - WordPress-Version
@@ -2973,7 +2973,7 @@ Alle Tests erfolgreich:
 
 **Feedback senden:**
 - **Email:** kundensupport@zoobro.de
-- **Betreff:** "BG Camp Availability v1.3.52"
+- **Betreff:** "Camp Availability v1.3.52"
 
 **Bei Fragen bitte angeben:**
 - Screenshot der Änderungen
@@ -3306,7 +3306,7 @@ Der Bug ist vollständig behoben.
 **Bei Fragen oder Problemen:**
 
 **Email:** kundensupport@zoobro.de  
-**Betreff:** "BG Camp Availability v1.3.51 Hotfix"
+**Betreff:** "Camp Availability v1.3.51 Hotfix"
 
 **Bitte angeben:**
 - System-Theme (Light/Dark)
@@ -3761,7 +3761,7 @@ Auftragsstatus: In Bearbeitung 🔄
 **Option A: Automatisches Update (WordPress Dashboard)**
 ```
 1. WordPress Admin → Plugins
-2. "Aktualisieren" bei "BG Camp Availability Integration" klicken
+2. "Aktualisieren" bei "Camp Availability Integration" klicken
 3. Fertig!
 ```
 
@@ -3895,7 +3895,7 @@ Alle Tests erfolgreich:
 **Bei Fragen oder Problemen:**
 
 **Email:** kundensupport@zoobro.de  
-**Betreff:** "BG Camp Availability v1.3.50"
+**Betreff:** "Camp Availability v1.3.50"
 
 **Bitte angeben:**
 - WordPress-Version
@@ -4210,7 +4210,7 @@ Mögliche Features für v1.3.50:
 
 **Bei Fragen:**
 - Email: kundensupport@zoobro.de
-- Betreff: "BG Camp Availability v1.3.49"
+- Betreff: "Camp Availability v1.3.49"
 
 ---
 
@@ -4577,7 +4577,7 @@ Mögliche Features für v1.3.49:
 
 **Bei Fragen oder Problemen:**
 - Email: kundensupport@zoobro.de
-- Betreff: "BG Camp Availability v1.3.48"
+- Betreff: "Camp Availability v1.3.48"
 
 **Bei Bug-Reports bitte angeben:**
 - WordPress-Version
@@ -4862,7 +4862,7 @@ Die Tabellen sollten jetzt übersichtlicher sein!
 
 Bei Fragen oder Feedback:
 - **Email:** kundensupport@zoobro.de
-- **Betreff:** "BG Camp Availability v1.3.47 - Spalten"
+- **Betreff:** "Camp Availability v1.3.47 - Spalten"
 
 **Feedback willkommen:**
 - Gefällt dir die neue Darstellung?
@@ -5273,7 +5273,7 @@ Falls v1.3.46 IMMER NOCH keine Sitzplätze anzeigt:
 
 4. **Melde dich beim Support:**
    - **Email:** kundensupport@zoobro.de
-   - **Betreff:** "BG Camp v1.3.46 - Seat Data Debug"
+   - **Betreff:** "Camp v1.3.46 - Seat Data Debug"
    - **Anhang:** Debug-Ausgabe + Screenshot
 
 ---
@@ -5282,7 +5282,7 @@ Falls v1.3.46 IMMER NOCH keine Sitzplätze anzeigt:
 
 Bei Fragen oder Problemen:
 - **Email:** kundensupport@zoobro.de
-- **Betreff:** "BG Camp Availability v1.3.46 - Stachethemes"
+- **Betreff:** "Camp Availability v1.3.46 - Stachethemes"
 
 **Bitte anhängen:**
 - Screenshot vom Booking Dashboard
@@ -5569,7 +5569,7 @@ Falls immer noch keine Sitzplätze: Siehe "Debug - Meta-Keys prüfen" oben
 
 Bei Fragen oder Problemen:
 - **Email:** kundensupport@zoobro.de
-- **Betreff:** "BG Camp Availability v1.3.45 - Seat Data"
+- **Betreff:** "Camp Availability v1.3.45 - Seat Data"
 
 ---
 
@@ -7304,7 +7304,7 @@ Wenn Fallback verwendet wurde:
 ### Schritt 1: Installation
 
 1. WordPress-Admin → Plugins
-2. "BG Camp Availability Integration" **deaktivieren & löschen**
+2. "Camp Availability Integration" **deaktivieren & löschen**
 3. Neue Version hochladen: `bg-camp-availability-integration-v1_3_41.zip`
 4. Installieren → Aktivieren
 5. **Browser-Cache leeren** (Strg+Shift+Del → Alles löschen)
@@ -7840,7 +7840,7 @@ $(document.body).on('updated_wc_div', function() {
 
 **Schritt 5: Support kontaktieren**
 - Email: kundensupport@zoobro.de
-- Betreff: "BG Camp Availability v1.3.40 - Countdown Debug"
+- Betreff: "Camp Availability v1.3.40 - Countdown Debug"
 - Anhang: Screenshot der Console-Logs
 - Beschreibung: Welcher Fehler-Fall (1, 2, 3, oder 4)
 
@@ -7921,7 +7921,7 @@ wp_enqueue_script(
 
 Bei Fragen oder für Debug-Logs:
 - **Email:** kundensupport@zoobro.de
-- **Betreff:** "BG Camp Availability v1.3.40 - Countdown Debug"
+- **Betreff:** "Camp Availability v1.3.40 - Countdown Debug"
 - **Plugin-Version:** 1.3.40
 - **Release-Datum:** 2025-10-29
 
@@ -8320,7 +8320,7 @@ setTimeout(function() {
 
 1. **WordPress-Admin öffnen**
 2. Plugins → Installierte Plugins
-3. "BG Camp Availability Integration" deaktivieren
+3. "Camp Availability Integration" deaktivieren
 4. Plugin löschen
 5. Plugins → Installieren → Plugin hochladen
 6. `bg-camp-availability-integration-v1_3_39.zip` auswählen
@@ -8467,7 +8467,7 @@ $current_timestamp = $current_datetime_obj->getTimestamp();  // ✅ Konsistent
 
 **Schritte:**
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_38.zip` hochladen
 4. Plugin **aktivieren**
 5. ✅ **Testen:** Kategorieseite mit nicht-verfügbaren Produkten prüfen
@@ -8505,7 +8505,7 @@ $current_timestamp = $current_datetime_obj->getTimestamp();  // ✅ Konsistent
    ✅ Button erscheint zur richtigen Zeit?
    ✅ NICHT 1 Stunde zu spät?
    
-2. Admin: BG Camp Availability → Logs prüfen
+2. Admin: Camp Availability → Logs prüfen
    ✅ Keine Zeitzonenfehler in Logs?
 ```
 
@@ -8660,7 +8660,7 @@ A: DateTime mit wp_timezone() behandelt DST automatisch korrekt.
 Falls Probleme auftreten:
 
 1. WordPress Admin → Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_37.zip` hochladen
 4. Plugin **aktivieren**
 5. ✅ Zurück auf v1.3.37 (mit 1-Stunden-Differenz)
@@ -8778,7 +8778,7 @@ setInterval(function() {
 
 **Schritte:**
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_37.zip` hochladen
 4. Plugin **aktivieren**
 5. ✅ **Testen:** Produktdetailseiten & Kategorieseiten prüfen
@@ -8950,7 +8950,7 @@ A: Der Filter wirkt nur auf `is_product()` Seiten, damit auf Übersichtsseiten w
 Falls Probleme auftreten:
 
 1. WordPress Admin → Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_36.zip` hochladen
 4. Plugin **aktivieren**
 5. ✅ Zurück auf v1.3.36
@@ -9022,10 +9022,10 @@ echo esc_html( $readme_content );  // ✅ FUNKTIONIERT IMMER!
 
 **Schritte:**
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_36.zip` hochladen
 4. Plugin **aktivieren**
-5. ✅ **Testen:** BG Camp Availability → Documentation
+5. ✅ **Testen:** Camp Availability → Documentation
 
 **Keine Settings-Änderungen nötig!** 🎉
 
@@ -9034,7 +9034,7 @@ echo esc_html( $readme_content );  // ✅ FUNKTIONIERT IMMER!
 ## 🧪 QUICK CHECK (30 Sekunden)
 
 ```
-1. WordPress Admin → BG Camp Availability → Documentation
+1. WordPress Admin → Camp Availability → Documentation
    ✅ Seite lädt ohne Fehler?
    ✅ Markdown wird in Code-Block angezeigt?
    ✅ Text ist lesbar und gut formatiert?
@@ -9388,10 +9388,10 @@ foreach ( $code_blocks as $placeholder => $code_html ) {
 
 **Schritte:**
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_35.zip` hochladen
 4. Plugin **aktivieren**
-5. ✅ **Testen:** BG Camp Availability → Documentation
+5. ✅ **Testen:** Camp Availability → Documentation
 
 **Keine Settings-Änderungen nötig!** 🎉
 
@@ -9400,7 +9400,7 @@ foreach ( $code_blocks as $placeholder => $code_html ) {
 ## 🧪 QUICK CHECK (30 Sekunden)
 
 ```
-1. WordPress Admin → BG Camp Availability → Documentation
+1. WordPress Admin → Camp Availability → Documentation
    ✅ Seite lädt ohne Fehler?
    ✅ Code-Blöcke werden korrekt angezeigt?
    ✅ KEINE verschachtelten <strong><em><code> Tags?
@@ -9693,10 +9693,10 @@ $html = preg_replace_callback(
 
 **Schritte:**
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_34.zip` hochladen
 4. Plugin **aktivieren**
-5. ✅ **Testen:** BG Camp Availability → Documentation
+5. ✅ **Testen:** Camp Availability → Documentation
 
 **Keine Settings-Änderungen nötig!** 🎉
 
@@ -9705,7 +9705,7 @@ $html = preg_replace_callback(
 ## 🧪 QUICK CHECK (30 Sekunden)
 
 ```
-1. WordPress Admin → BG Camp Availability → Documentation
+1. WordPress Admin → Camp Availability → Documentation
    ✅ Seite lädt ohne Fehler?
    ✅ Code-Blöcke werden korrekt angezeigt?
    ✅ Kein PHP/HTML-Code wird ausgeführt?
@@ -9972,10 +9972,10 @@ if ( file_exists( $update_file ) ) {
 
 **Schritte:**
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" **deaktivieren**
+2. "Camp Availability Integration" **deaktivieren**
 3. `bg-camp-availability-integration-v1_3_33.zip` hochladen
 4. Plugin **aktivieren**
-5. ✅ **Testen:** BG Camp Availability → Documentation
+5. ✅ **Testen:** Camp Availability → Documentation
 
 **Keine Settings-Änderungen nötig!** 🎉
 
@@ -9984,7 +9984,7 @@ if ( file_exists( $update_file ) ) {
 ## 🧪 QUICK CHECK (30 Sekunden)
 
 ```
-1. WordPress Admin → BG Camp Availability → Documentation
+1. WordPress Admin → Camp Availability → Documentation
    ✅ Seite lädt ohne Fehler?
    ✅ Tabs sind sichtbar:
       • README
@@ -10246,7 +10246,7 @@ WordPress Debug aktivieren:
 **Das Problem:**
 - Buttons wurden korrekt gesteuert (versteckt/angezeigt) ✅
 - **ABER:** Countdown-Timer wurde nicht angezeigt ❌
-- Grund: Falscher `counter_display` Wert in unserem BG Camp System
+- Grund: Falscher `counter_display` Wert in unserem Camp System
 
 **Technische Details:**
 ```php
@@ -10329,7 +10329,7 @@ if ( file_exists( $update_file ) ) {
 **Schritte:**
 1. **Backup erstellen** (empfohlen)
 2. WordPress Admin → Plugins → Installierte Plugins
-3. "BG Camp Availability Integration" **deaktivieren**
+3. "Camp Availability Integration" **deaktivieren**
 4. `bg-camp-availability-integration-v1_3_32.zip` hochladen
 5. Plugin **aktivieren**
 6. ✅ **Testen:** Produkt mit Availability → Countdown sichtbar?
@@ -10352,7 +10352,7 @@ WordPress Admin → Plugins
 #### 2. Countdown testen
 ```
 1. Produkt bearbeiten (z.B. Test-Camp)
-2. Meta-Box "Produkt-Verfügbarkeit (BG Camp)"
+2. Meta-Box "Produkt-Verfügbarkeit (Camp)"
    ✅ Checkbox "Verfügbarkeit aktivieren" = AN
    ✅ Start-Datum = Morgen
    ✅ Start-Zeit = 10:00
@@ -10367,7 +10367,7 @@ WordPress Admin → Plugins
 
 #### 3. Documentation prüfen
 ```
-BG Camp Availability → Documentation:
+Camp Availability → Documentation:
 ✅ Tab "Latest Update (v1.3.32)" vorhanden?
 ✅ UPDATE.md Inhalt wird angezeigt?
 ✅ Zeigt v1.3.32 Eintrag ganz oben?
@@ -10467,7 +10467,7 @@ const VERSION = '1.3.32';
 
 ### Bug 1: Countdown nicht angezeigt
 **Root Cause:**
-Als das eigene BG Camp System in v1.3.30 implementiert wurde, wurde ein vereinfachter `counter_display` Wert (`'before'`) verwendet. Die Frontend-Klasse erwartete aber die spezifischen Koalaapps-kompatiblen Werte (`'avail_bfr_prod'`, etc.).
+Als das eigene Camp System in v1.3.30 implementiert wurde, wurde ein vereinfachter `counter_display` Wert (`'before'`) verwendet. Die Frontend-Klasse erwartete aber die spezifischen Koalaapps-kompatiblen Werte (`'avail_bfr_prod'`, etc.).
 
 **Lesson Learned:**
 Bei Integration mit existierenden Systemen (Koalaapps) müssen deren Konventionen eingehalten werden, auch wenn wir unser eigenes System nutzen.
@@ -10714,7 +10714,7 @@ Optional Plugins:
 ### Wenn du Koalaapps noch nutzt:
 - ✅ Fallback-System funktioniert weiterhin
 - ✅ Alte Produkte mit Koalaapps-Einstellungen laufen normal
-- ℹ️ Empfehlung: Schrittweise auf unser BG Camp System migrieren
+- ℹ️ Empfehlung: Schrittweise auf unser Camp System migrieren
 
 ---
 
@@ -10723,7 +10723,7 @@ Optional Plugins:
 ### Quick Update (empfohlen)
 ```
 1. WordPress Admin → Plugins → Installierte Plugins
-2. "BG Camp Availability Integration" deaktivieren
+2. "Camp Availability Integration" deaktivieren
 3. bg-camp-availability-integration-v1_3_31.zip hochladen
 4. Plugin aktivieren
 5. ✅ Fertig!
@@ -10757,7 +10757,7 @@ Optional Plugins:
 ### Im WordPress Admin:
 
 ```
-BG Camp Availability → Documentation:
+Camp Availability → Documentation:
 ├── README Tab           - README.md Inhalt
 ├── Latest Update Tab    - UPDATE.md (neuester Eintrag automatisch)
 ├── Changelog Tab        - CHANGELOG.md Inhalt
@@ -10772,7 +10772,7 @@ BG Camp Availability → Documentation:
 
 ### Funktional identisch zu v1.3.30:
 - ✅ Eigenes Availability-System (Priority 5)
-- ✅ Admin Meta-Box "Produkt-Verfügbarkeit (BG Camp)"
+- ✅ Admin Meta-Box "Produkt-Verfügbarkeit (Camp)"
 - ✅ Availability-Spalte in Produktliste
 - ✅ Intelligenter Fallback zu Koalaapps
 - ✅ Advanced Debug Integration
@@ -10866,15 +10866,15 @@ README.md sollte immer aktuell sein.
 ### Quick Check (1 Minute)
 ```
 1. WordPress Admin → Plugins
-   ✅ "BG Camp Availability Integration" aktiv?
+   ✅ "Camp Availability Integration" aktiv?
    ✅ Version zeigt 1.3.31?
 
-2. WordPress Admin → BG Camp Availability → Documentation
+2. WordPress Admin → Camp Availability → Documentation
    ✅ Latest Update zeigt v1.3.31?
    ✅ README zeigt korrekten Inhalt?
 
 3. Produkt bearbeiten
-   ✅ Meta-Box "Produkt-Verfügbarkeit (BG Camp)" vorhanden?
+   ✅ Meta-Box "Produkt-Verfügbarkeit (Camp)" vorhanden?
    ✅ Funktioniert wie vorher?
 ```
 
@@ -10984,7 +10984,7 @@ Der Koalaapps "Product Availability Scheduler" hat uns immer wieder Probleme ber
 
 ### 1. **Neue Admin Meta-Box**
 
-**Location:** Produkt bearbeiten → Sidebar → "Produkt-Verfügbarkeit (BG Camp)"
+**Location:** Produkt bearbeiten → Sidebar → "Produkt-Verfügbarkeit (Camp)"
 
 **Felder:**
 - ✅ **Verfügbarkeit aktivieren** (Checkbox)
@@ -11031,7 +11031,7 @@ Priority 50:  Cart Reservation (Stock-Check)
 **System prüft in dieser Reihenfolge:**
 
 ```
-1. Unser BG Camp Availability System
+1. Unser Camp Availability System
    └─ Aktiviert für Produkt? → Verwende unsere Logik ✅
    
 2. Koalaapps Scheduler (Fallback)
@@ -11059,7 +11059,7 @@ Alle Availability-Checks werden geloggt:
   start_time: 10:00
   is_available: false
 
-[2025-10-29 10:30:05] [INFO] [HOOKS] BG Camp Availability check completed
+[2025-10-29 10:30:05] [INFO] [HOOKS] Camp Availability check completed
   product_id: 123
   is_available: false
   start_date: 2025-11-01
@@ -11183,7 +11183,7 @@ if ( class_exists( 'AS_CAI_Product_Availability' ) ) {
 **Für jedes Produkt:**
 ```
 1. WordPress Admin → Produkte → [Produkt bearbeiten]
-2. Meta-Box "Produkt-Verfügbarkeit (BG Camp)" finden
+2. Meta-Box "Produkt-Verfügbarkeit (Camp)" finden
 3. Checkbox aktivieren
 4. Start-Datum & Zeit aus alter Koalaapps-Box übernehmen
 5. Speichern
@@ -11233,7 +11233,7 @@ if ( class_exists( 'AS_CAI_Product_Availability' ) ) {
 **1. Neues Produkt mit unserem System:**
 ```
 ✅ Produkt erstellen
-✅ "Produkt-Verfügbarkeit (BG Camp)" Meta-Box finden
+✅ "Produkt-Verfügbarkeit (Camp)" Meta-Box finden
 ✅ Checkbox aktivieren
 ✅ Start-Datum: Morgen, Start-Zeit: 10:00
 ✅ Speichern
@@ -11315,7 +11315,7 @@ Nach Update erscheint Info-Notice:
 **3. Produkte migrieren (optional):**
 ```
 Für jedes Produkt:
-→ Meta-Box "Produkt-Verfügbarkeit (BG Camp)"
+→ Meta-Box "Produkt-Verfügbarkeit (Camp)"
 → Aktivieren + Datum/Zeit eingeben
 → Speichern
 ```
@@ -11424,14 +11424,14 @@ Settings → Advanced Debug Tab:
 **2. Logs prüfen:**
 ```
 Log Viewer → Filter: "availability"
-→ Zeigt unser System: "Using BG Camp Availability system"?
+→ Zeigt unser System: "Using Camp Availability system"?
 → Oder Fallback: "Falling back to Koalaapps Scheduler"?
 ```
 
 **3. Meta-Box prüfen:**
 ```
 Produkt bearbeiten:
-→ "Produkt-Verfügbarkeit (BG Camp)" Meta-Box vorhanden?
+→ "Produkt-Verfügbarkeit (Camp)" Meta-Box vorhanden?
 → Checkbox aktiviert?
 → Datum/Zeit korrekt?
 → Status zeigt korrekt an?
@@ -14620,7 +14620,7 @@ Produkt B: Parzelle Area 2              ← Kein Timer
 
 ### Test 4: Admin-Settings
 ```
-1. Admin → BG Camp Availability → Settings
+1. Admin → Camp Availability → Settings
 2. Timer-Einstellungen prüfen
 3. Ergebnis:
    ✅ "Show Cart Timer" vorhanden

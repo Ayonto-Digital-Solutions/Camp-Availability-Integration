@@ -1,4 +1,4 @@
-/* BG Camp Availability Integration - Cart Timer */
+/* Camp Availability Integration - Cart Timer */
 
 (function($) {
 	'use strict';

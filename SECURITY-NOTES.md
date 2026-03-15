@@ -1,5 +1,5 @@
 # Security Notes
-## BG Camp Availability Integration
+## Camp Availability Integration
 
 ### Version 1.2.0 - Security Hardened ✅
 

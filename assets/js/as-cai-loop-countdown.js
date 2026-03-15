@@ -1,5 +1,5 @@
 /**
- * BG Camp Availability Integration - Loop Countdown
+ * Camp Availability Integration - Loop Countdown
  * 
  * Updates countdown timers on category/shop pages for unavailable products.
  * 

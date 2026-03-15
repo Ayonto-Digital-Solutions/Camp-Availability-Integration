@@ -1,4 +1,4 @@
-# BG Camp Availability Integration
+# Camp Availability Integration
 
 **Version:** 1.3.58  
 **Author:** Marc Mirschel  

@@ -1,6 +1,6 @@
 <?php
 /**
- * Debug functionality for BG Camp Availability Integration.
+ * Debug functionality for Camp Availability Integration.
  *
  * @package AS_Camp_Availability_Integration
  */
@@ -422,7 +422,7 @@ class AS_CAI_Debug {
 
 		?>
 		<div class="wrap">
-			<h1>BG Camp Availability Integration - Debug Tools</h1>
+			<h1>Camp Availability Integration - Debug Tools</h1>
 
 			<div class="card">
 				<h2>Debug Mode</h2>

@@ -58,8 +58,8 @@ class AS_CAI_Admin {
 	public function add_admin_menu() {
 		// Main menu.
 		add_menu_page(
-			__( 'BG Camp Availability', 'as-camp-availability-integration' ),
-			__( 'BG Camp Avail.', 'as-camp-availability-integration' ),
+			__( 'Ayonto Camp Availability', 'as-camp-availability-integration' ),
+			__( 'Ayonto Camp Avail.', 'as-camp-availability-integration' ),
 			'manage_woocommerce',
 			'bg-camp-availability',
 			array( $this, 'render_admin_page' ),
@@ -296,7 +296,7 @@ class AS_CAI_Admin {
 				<div style="display: flex; align-items: center; gap: 20px;">
 					<i class="fas fa-campground" style="font-size: 3rem;"></i>
 					<div>
-						<h1>BG Camp Availability Integration</h1>
+						<h1>Ayonto Camp Availability Integration</h1>
 						<p>
 							<?php
 							printf(

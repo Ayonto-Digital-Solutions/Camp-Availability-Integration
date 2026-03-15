@@ -1,4 +1,4 @@
-# Changelog - BG Camp Availability Integration
+# Changelog - Camp Availability Integration
 
 Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
@@ -308,7 +308,7 @@ Alle Fixes sind **100% rückwärtskompatibel**:
    ```
 
 2. **Plugin aktualisieren:**
-   - Dashboard → Plugins → BG Camp Availability Integration
+   - Dashboard → Plugins → Camp Availability Integration
    - Deaktivieren → Löschen
    - `bg-camp-availability-integration-v1_3_56.zip` hochladen
    - Aktivieren
@@ -2689,7 +2689,7 @@ if ( file_exists( $update_file ) ) {
 #### Testing
 **Quick Check nach Update (30 Sekunden):**
 ```
-1. BG Camp Availability → Documentation
+1. Camp Availability → Documentation
    ✅ Seite lädt ohne Fehler?
    ✅ Tabs sichtbar (README, Latest Update, Changelog, Support)?
    ✅ Alle Tabs klickbar?
@@ -2734,7 +2734,7 @@ if ( file_exists( $update_file ) ) {
 #### Fixed
 - 🐛 **Countdown wird jetzt angezeigt!** - Kritischer Bugfix
   - Problem: Countdown-Timer wurde nicht angezeigt, obwohl Buttons korrekt gesteuert wurden
-  - Root Cause: Falscher `counter_display` Wert in BG Camp System
+  - Root Cause: Falscher `counter_display` Wert in Camp System
   - Vorher: `'counter_display' => 'before'` ❌ (nicht erkannt)
   - Jetzt: `'counter_display' => 'avail_bfr_prod'` ✅ (Product-level mode)
   - Datei: `includes/class-as-cai-availability-check.php` (Zeile 61)
@@ -2817,7 +2817,7 @@ if ( file_exists( $update_file ) ) {
    ✅ Läuft herunter?
 
 3. Documentation prüfen:
-   BG Camp Availability → Documentation
+   Camp Availability → Documentation
    ✅ Tab "Latest Update (v1.3.32)" vorhanden?
    ✅ UPDATE.md Inhalt wird angezeigt?
 ```
@@ -2905,7 +2905,7 @@ if ( file_exists( $update_file ) ) {
   - Hook-Priority 5 - läuft VOR allen anderen Plugins
   - Volle Kontrolle über Availability-Logik
   
-- ✨ **Admin Meta-Box** - "Produkt-Verfügbarkeit (BG Camp)"
+- ✨ **Admin Meta-Box** - "Produkt-Verfügbarkeit (Camp)"
   - Einfache Checkbox: "Verfügbarkeit aktivieren"
   - Date-Picker: Start-Datum (Y-m-d Format)
   - Time-Picker: Start-Zeit (24h Format, H:i)
@@ -2931,7 +2931,7 @@ if ( file_exists( $update_file ) ) {
   - Alte Produkte funktionieren weiter
 
 - 🔧 **AS_CAI_Availability_Check::get_product_availability() erweitert**
-  - Prüft ZUERST unser BG Camp System
+  - Prüft ZUERST unser Camp System
   - Fallback zu Koalaapps wenn nötig
   - Saubere Prioritätslogik
   - Verbesserte Debug-Logs
@@ -2985,7 +2985,7 @@ add_filter( 'woocommerce_is_purchasable', [...], 5, 2 ); // Priority 5!
 #### Advanced Debug Integration
 - 🔍 **Alle Availability-Actions geloggt**
   - Save: "Availability settings saved"
-  - Check: "BG Camp Availability check completed"
+  - Check: "Camp Availability check completed"
   - Result: "PURCHASABLE" oder "NOT PURCHASABLE"
   - Performance-Tracking für jeden Check
 
@@ -2998,9 +2998,9 @@ add_filter( 'woocommerce_is_purchasable', [...], 5, 2 ); // Priority 5!
   - **Wenn diese Features benötigt werden:** Koalaapps als Fallback nutzen!
 
 #### Migration Guide
-**Von Koalaapps zu BG Camp System:**
+**Von Koalaapps zu Camp System:**
 1. Produkt bearbeiten
-2. Meta-Box "Produkt-Verfügbarkeit (BG Camp)" finden
+2. Meta-Box "Produkt-Verfügbarkeit (Camp)" finden
 3. Checkbox aktivieren
 4. Start-Datum & Zeit eingeben
 5. Speichern
@@ -4564,7 +4564,7 @@ if ( isset( $_POST['as_cai_save_debug_settings'] ) && check_admin_referer(...) )
 ## [1.1.11] - 2025-10-27
 
 ### 🏷️ Behoben - BRANDING & DEBUG-DEAKTIVIERUNG
-- **Plugin-Name korrigiert:** "AS Camp" → "BG Camp" überall wo sichtbar
+- **Plugin-Name korrigiert:** "AS Camp" → "Camp" überall wo sichtbar
 - **Admin-Menü korrigiert:** "AS CAI Debug" → "BG CAI Debug"
 - **Debug-Panel korrigiert:** Header zeigt jetzt "BG CAI Debug Panel"
 - **Debug-Deaktivierung verbessert:** Klarere Anweisungen wie man Debug-Modus ausschaltet
@@ -4578,7 +4578,7 @@ if ( isset( $_POST['as_cai_save_debug_settings'] ) && check_admin_referer(...) )
   - NACHHER: "🐛 BG CAI Debug Panel"
 - **Debug-Page Titel:**
   - VORHER: "AS Camp Availability Integration - Debug Tools"
-  - NACHHER: "BG Camp Availability Integration - Debug Tools"
+  - NACHHER: "Camp Availability Integration - Debug Tools"
 - **Deaktivierungs-Nachricht:**
   - VORHER: "To disable: Remove ?as_cai_debug=1 from URL or set AS_CAI_DEBUG to false"
   - NACHHER: "To disable: Go to WooCommerce → BG CAI Debug and uncheck 'Enable Debug Mode', or remove ?as_cai_debug=1 from URL"
@@ -4613,7 +4613,7 @@ Es gibt 3 Wege den Debug-Modus zu aktivieren/deaktivieren:
 
 **Priorität:** URL-Parameter > wp-config.php > Admin-Panel Option
 
-**Hinweis:** Der interne Code-Name bleibt "AS_CAI" (für Application Shortcode - Camp Availability Integration). Nur die sichtbaren Texte wurden zu "BG Camp" geändert.
+**Hinweis:** Der interne Code-Name bleibt "AS_CAI" (für Application Shortcode - Camp Availability Integration). Nur die sichtbaren Texte wurden zu "Camp" geändert.
 
 ---
 

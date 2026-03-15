@@ -1,6 +1,6 @@
 <?php
 /**
- * BG Camp Availability Integration Uninstaller
+ * Camp Availability Integration Uninstaller
  *
  * This file runs when the plugin is deleted.
  * It removes all plugin data from the database.

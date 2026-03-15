@@ -48,7 +48,7 @@ class AS_CAI_Product_Availability {
 	public function add_availability_meta_box() {
 		add_meta_box(
 			'as_cai_availability',
-			__( 'Produkt-Verfügbarkeit (BG Camp)', 'as-camp-availability-integration' ),
+			__( 'Produkt-Verfügbarkeit (Ayonto Camp)', 'as-camp-availability-integration' ),
 			array( $this, 'render_availability_meta_box' ),
 			'product',
 			'side',
@@ -228,7 +228,7 @@ class AS_CAI_Product_Availability {
 		if ( $enabled !== 'yes' ) {
 			// Not using our system - let other plugins handle it
 			if ( class_exists( 'AS_CAI_Advanced_Debug' ) ) {
-				AS_CAI_Advanced_Debug::instance()->debug( 'hooks', 'BG Camp Availability not enabled for product', array(
+				AS_CAI_Advanced_Debug::instance()->debug( 'hooks', 'Ayonto Camp Availability not enabled for product', array(
 					'product_id' => $product_id,
 					'enabled'    => $enabled,
 				) );
@@ -245,7 +245,7 @@ class AS_CAI_Product_Availability {
 			$start_date = get_post_meta( $product_id, '_as_cai_availability_start_date', true );
 			$start_time = get_post_meta( $product_id, '_as_cai_availability_start_time', true );
 			
-			AS_CAI_Advanced_Debug::instance()->info( 'hooks', 'BG Camp Availability check completed', array(
+			AS_CAI_Advanced_Debug::instance()->info( 'hooks', 'Ayonto Camp Availability check completed', array(
 				'product_id'     => $product_id,
 				'is_available'   => $is_available,
 				'start_date'     => $start_date,

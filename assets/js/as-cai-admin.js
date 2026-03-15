@@ -1,4 +1,4 @@
-/* BG Camp Availability Integration - Admin JavaScript */
+/* Camp Availability Integration - Admin JavaScript */
 
 function asCaiAdminApp() {
 	return {
@@ -129,5 +129,5 @@ window.asCaiAdminApp = asCaiAdminApp;
 
 // Initialize when Alpine is ready
 document.addEventListener('alpine:init', () => {
-	console.log('BG Camp Availability Admin initialized');
+	console.log('Ayonto Camp Availability Admin initialized');
 });

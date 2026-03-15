@@ -1,4 +1,4 @@
-# BG Camp Availability Integration - Installationsanleitung
+# Camp Availability Integration - Installationsanleitung
 
 ## Schnellstart
 

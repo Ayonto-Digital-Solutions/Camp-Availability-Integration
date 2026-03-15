@@ -1,5 +1,5 @@
 /**
- * BG Camp Availability Integration - Debug Scripts
+ * Camp Availability Integration - Debug Scripts
  * Version: 1.2.0
  * 
  * This file contains debug functionality separated from inline scripts

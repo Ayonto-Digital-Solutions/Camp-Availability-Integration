@@ -53,7 +53,7 @@ class AS_CAI_Availability_Check {
 			
 			if ( $our_data !== null ) {
 				// We're using our own system for this product
-				$debug->log( 'Using BG Camp Availability system', 'info', $our_data );
+				$debug->log( 'Using Ayonto Camp Availability system', 'info', $our_data );
 				
 				return array(
 					'is_available'    => $our_data['is_available'],

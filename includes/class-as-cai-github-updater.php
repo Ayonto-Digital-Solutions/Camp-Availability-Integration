@@ -267,7 +267,7 @@ class AS_CAI_GitHub_Updater {
 		}
 
 		$info = new stdClass();
-		$info->name          = 'BG Camp Availability Integration';
+		$info->name          = 'Camp Availability Integration';
 		$info->slug          = $this->slug;
 		$info->version       = $release->tag_name;
 		$info->author        = '<a href="https://marc.mirschel.biz">Marc Mirschel</a>';

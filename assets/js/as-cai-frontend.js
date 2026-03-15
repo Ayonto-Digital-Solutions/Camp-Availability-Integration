@@ -179,10 +179,17 @@
 			$(document).trigger('as-cai-product-available');
 			debug.log('Custom event "as-cai-product-available" triggered');
 
-			// Trigger page refresh after 500ms to ensure Koala Plugin updates availability.
-			debug.log('Triggering page refresh to update availability...');
+			// Clear caches and reload to ensure fresh availability data.
+			debug.log('Clearing caches and triggering page refresh...');
 			setTimeout(function() {
-				location.reload();
+				// Clear WooCommerce cart fragments cache
+				if (typeof sessionStorage !== 'undefined') {
+					sessionStorage.removeItem('wc_fragments');
+					sessionStorage.removeItem('wc_cart_hash');
+					sessionStorage.removeItem('wc_cart_created');
+				}
+				// Force hard reload bypassing browser cache
+				location.replace(location.href.split('#')[0] + (location.href.indexOf('?') > -1 ? '&' : '?') + '_nocache=' + Date.now());
 			}, 500);
 
 			return;

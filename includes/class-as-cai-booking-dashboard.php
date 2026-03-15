@@ -45,6 +45,7 @@ class AS_CAI_Booking_Dashboard {
 	private function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ), 20 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		add_action( 'admin_init', array( $this, 'handle_csv_export' ) );
 	}
 
 	/**
@@ -226,9 +227,33 @@ class AS_CAI_Booking_Dashboard {
 				<?php endforeach; ?>
 			<?php endif; ?>
 
-			<!-- Export Button -->
+			<!-- Export Buttons -->
 			<div class="as-cai-export">
+				<?php
+				$export_params = array(
+					'page'       => 'as-cai-booking-dashboard',
+					'export'     => 'csv',
+					'_wpnonce'   => wp_create_nonce( 'as_cai_export_csv' ),
+				);
+				if ( $selected_category ) {
+					$export_params['category'] = $selected_category;
+				}
+				if ( 'any' !== $order_status ) {
+					$export_params['status'] = $order_status;
+				}
+				if ( $date_from ) {
+					$export_params['date_from'] = $date_from;
+				}
+				if ( $date_to ) {
+					$export_params['date_to'] = $date_to;
+				}
+				?>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?' . http_build_query( $export_params ) ) ); ?>" class="button button-secondary">
+					<span class="dashicons dashicons-download" style="vertical-align: middle; margin-top: -2px;"></span>
+					<?php esc_html_e( 'CSV/Excel Export', 'as-camp-availability-integration' ); ?>
+				</a>
 				<button type="button" class="button button-secondary" onclick="window.print();">
+					<span class="dashicons dashicons-printer" style="vertical-align: middle; margin-top: -2px;"></span>
 					<?php esc_html_e( 'Als PDF drucken', 'as-camp-availability-integration' ); ?>
 				</button>
 			</div>
@@ -257,11 +282,11 @@ class AS_CAI_Booking_Dashboard {
 			$args['status'] = $order_status;
 		}
 
-		if ( ! empty( $date_from ) ) {
+		if ( ! empty( $date_from ) && ! empty( $date_to ) ) {
+			$args['date_created'] = strtotime( $date_from ) . '...' . strtotime( $date_to . ' 23:59:59' );
+		} elseif ( ! empty( $date_from ) ) {
 			$args['date_created'] = '>=' . strtotime( $date_from );
-		}
-
-		if ( ! empty( $date_to ) ) {
+		} elseif ( ! empty( $date_to ) ) {
 			$args['date_created'] = '<=' . strtotime( $date_to . ' 23:59:59' );
 		}
 
@@ -470,7 +495,7 @@ class AS_CAI_Booking_Dashboard {
 	private function render_statistics( $bookings ) {
 		$total_bookings = count( $bookings );
 		$total_customers = count( array_unique( array_column( $bookings, 'customer_email' ) ) );
-		$total_products = array_sum( array_column( $bookings, 'quantity' ) );
+		$total_products = count( array_unique( array_column( $bookings, 'product_id' ) ) );
 
 		// Count by status
 		$status_counts = array();
@@ -493,7 +518,7 @@ class AS_CAI_Booking_Dashboard {
 			</div>
 			<div class="as-cai-stat-card">
 				<div class="as-cai-stat-value"><?php echo esc_html( $total_products ); ?></div>
-				<div class="as-cai-stat-label"><?php esc_html_e( 'Artikel gesamt', 'as-camp-availability-integration' ); ?></div>
+				<div class="as-cai-stat-label"><?php esc_html_e( 'Produkte', 'as-camp-availability-integration' ); ?></div>
 			</div>
 			<?php foreach ( $status_counts as $status => $count ) : ?>
 				<div class="as-cai-stat-card as-cai-stat-status">
@@ -524,5 +549,76 @@ class AS_CAI_Booking_Dashboard {
 		);
 
 		return isset( $labels[ $status ] ) ? $labels[ $status ] : wc_get_order_status_name( $status );
+	}
+
+	/**
+	 * Handle CSV export request.
+	 *
+	 * Exports visible bookings (respecting active filters) as CSV file.
+	 *
+	 * @since 1.3.61
+	 */
+	public function handle_csv_export() {
+		if ( ! isset( $_GET['page'], $_GET['export'] ) || 'as-cai-booking-dashboard' !== $_GET['page'] || 'csv' !== $_GET['export'] ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die( esc_html__( 'Keine Berechtigung.', 'as-camp-availability-integration' ) );
+		}
+
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'as_cai_export_csv' ) ) {
+			wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'as-camp-availability-integration' ) );
+		}
+
+		$category   = isset( $_GET['category'] ) ? sanitize_text_field( $_GET['category'] ) : '';
+		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'any';
+		$date_from  = isset( $_GET['date_from'] ) ? sanitize_text_field( $_GET['date_from'] ) : '';
+		$date_to    = isset( $_GET['date_to'] ) ? sanitize_text_field( $_GET['date_to'] ) : '';
+
+		$bookings = $this->get_bookings( $category, $status, $date_from, $date_to );
+
+		$filename = 'buchungen-export-' . gmdate( 'Y-m-d-His' ) . '.csv';
+
+		header( 'Content-Type: text/csv; charset=UTF-8' );
+		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+		header( 'Pragma: no-cache' );
+		header( 'Expires: 0' );
+
+		$output = fopen( 'php://output', 'w' );
+
+		// UTF-8 BOM for Excel compatibility
+		fwrite( $output, "\xEF\xBB\xBF" );
+
+		// Header row
+		fputcsv( $output, array(
+			'Bestellung',
+			'Kunde',
+			'E-Mail',
+			'Telefon',
+			'Produkt',
+			'Parzelle',
+			'Zahlstatus',
+			'Auftragsstatus',
+			'Datum',
+		), ';' );
+
+		// Data rows
+		foreach ( $bookings as $booking ) {
+			fputcsv( $output, array(
+				'#' . $booking['order_id'],
+				$booking['customer_name'],
+				$booking['customer_email'],
+				$booking['customer_phone'],
+				$booking['product_name'],
+				wp_strip_all_tags( $booking['variation_and_seat'] ),
+				$booking['payment_status'] === 'paid' ? 'Abgeschlossen' : 'Ausstehend',
+				$this->get_order_status_label( $booking['status'] ),
+				$booking['date'],
+			), ';' );
+		}
+
+		fclose( $output );
+		exit;
 	}
 }

@@ -8,6 +8,7 @@ function asCaiAdminApp() {
 			expired_today: 0,
 			system_healthy: true
 		},
+		activities: [],
 		
 		init() {
 			this.loadStats();

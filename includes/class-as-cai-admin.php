@@ -459,14 +459,14 @@ class AS_CAI_Admin {
 					</h2>
 				</div>
 				<div class="as-cai-card-body">
-					<div x-data="{ activities: [] }" x-init="loadRecentActivity()">
-						<template x-if="activities.length === 0">
+					<div x-init="loadRecentActivity()">
+						<template x-if="!activities || activities.length === 0">
 							<div class="as-cai-empty-state">
 								<i class="fas fa-inbox"></i>
 								<p><?php esc_html_e( 'No recent activity', 'as-camp-availability-integration' ); ?></p>
 							</div>
 						</template>
-						<template x-if="activities.length > 0">
+						<template x-if="activities && activities.length > 0">
 							<div style="max-height: 280px; overflow-y: auto;">
 								<template x-for="activity in activities" :key="activity.id">
 									<div style="padding: 12px; border-bottom: 1px solid var(--as-gray-200); display: flex; gap: 12px;">
@@ -539,7 +539,7 @@ class AS_CAI_Admin {
 				</div>
 
 				<!-- Settings Form (for first 3 tabs and advanced debug) -->
-				<form method="post" action="options.php" x-show="activeTab !== 'debug_tools'"
+				<form method="post" action="options.php" x-show="activeTab !== 'debug_tools'">
 					<!-- General Settings Tab -->
 					<div x-show="activeTab === 'general'" style="padding: 24px;">
 						<?php settings_fields( 'as_cai_general_settings' ); ?>
@@ -1098,9 +1098,10 @@ class AS_CAI_Admin {
 			}
 		}
 		
-		$readme_content = file_exists( $readme_file ) ? file_get_contents( $readme_file ) : '';
-		$changelog_content = file_exists( $changelog_file ) ? file_get_contents( $changelog_file ) : '';
-		$update_content = $latest_update_file && file_exists( $latest_update_file ) ? file_get_contents( $latest_update_file ) : '';
+		$parser = new AS_CAI_Markdown_Parser();
+		$readme_content = file_exists( $readme_file ) ? $parser->parse( file_get_contents( $readme_file ) ) : '';
+		$changelog_content = file_exists( $changelog_file ) ? $parser->parse( file_get_contents( $changelog_file ) ) : '';
+		$update_content = $latest_update_file && file_exists( $latest_update_file ) ? $parser->parse( file_get_contents( $latest_update_file ) ) : '';
 		
 		?>
 		<div class="as-cai-card as-cai-fade-in" x-data="{ activeDoc: 'readme' }">
@@ -1149,8 +1150,8 @@ class AS_CAI_Admin {
 
 				<!-- README Tab -->
 				<div x-show="activeDoc === 'readme'" style="padding: 24px; max-height: 800px; overflow-y: auto;">
-					<div class="as-cai-markdown-raw">
-						<pre><code class="language-markdown"><?php echo esc_html( $readme_content ); ?></code></pre>
+					<div class="as-cai-prose">
+						<?php echo wp_kses_post( $readme_content ); ?>
 					</div>
 				</div>
 
@@ -1164,16 +1165,16 @@ class AS_CAI_Admin {
 						printf( esc_html__( 'Version %s Documentation', 'as-camp-availability-integration' ), esc_html( $latest_version ) ); 
 						?>
 					</div>
-					<div class="as-cai-markdown-raw">
-						<pre><code class="language-markdown"><?php echo esc_html( $update_content ); ?></code></pre>
+					<div class="as-cai-prose">
+						<?php echo wp_kses_post( $update_content ); ?>
 					</div>
 				</div>
 				<?php endif; ?>
 
 				<!-- Changelog Tab -->
 				<div x-show="activeDoc === 'changelog'" x-cloak style="padding: 24px; max-height: 800px; overflow-y: auto;">
-					<div class="as-cai-markdown-raw">
-						<pre><code class="language-markdown"><?php echo esc_html( $changelog_content ); ?></code></pre>
+					<div class="as-cai-prose">
+						<?php echo wp_kses_post( $changelog_content ); ?>
 					</div>
 				</div>
 

@@ -70,11 +70,14 @@
 				<span>${asCaiCart.i18n.reservationExpired}</span>
 			`);
 
-			// Optionally reload cart after a delay
+			// Clear caches and reload cart after showing expired message
 			setTimeout(() => {
-				if (typeof location !== 'undefined') {
-					location.reload();
+				if (typeof sessionStorage !== 'undefined') {
+					sessionStorage.removeItem('wc_fragments');
+					sessionStorage.removeItem('wc_cart_hash');
+					sessionStorage.removeItem('wc_cart_created');
 				}
+				location.replace(location.href.split('#')[0] + (location.href.indexOf('?') > -1 ? '&' : '?') + '_nocache=' + Date.now());
 			}, 3000);
 		}
 

@@ -45,8 +45,15 @@
 
 		// If time is up, reload page to show normal button
 		if (secondsLeft <= 0) {
-			console.log('[AS-CAI v1.3.40] ⏰ Time is up! Reloading page...');
-			location.reload();
+			console.log('[AS-CAI v1.3.40] ⏰ Time is up! Clearing caches and reloading...');
+			// Clear WooCommerce cart fragments cache
+			if (typeof sessionStorage !== 'undefined') {
+				sessionStorage.removeItem('wc_fragments');
+				sessionStorage.removeItem('wc_cart_hash');
+				sessionStorage.removeItem('wc_cart_created');
+			}
+			// Force cache-busted reload
+			location.replace(location.href.split('#')[0] + (location.href.indexOf('?') > -1 ? '&' : '?') + '_nocache=' + Date.now());
 			return;
 		}
 

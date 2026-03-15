@@ -63,6 +63,12 @@
 	margin: 0;
 }
 
+/* === WORDPRESS NOTICES (ensure readability within admin wrap) === */
+.as-cai-admin-wrap .notice,
+.as-cai-admin-wrap .notice p {
+	color: #1d2327;
+}
+
 /* === TAB NAVIGATION === */
 .as-cai-tabs {
 	display: flex;

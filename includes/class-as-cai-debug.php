@@ -198,7 +198,7 @@ class AS_CAI_Debug {
 
 		?>
 		<div id="as-cai-debug-panel" style="background: #f0f0f0; border: 3px solid #d63638; padding: 20px; margin: 20px 0; font-family: monospace; font-size: 12px;">
-			<h2 style="margin: 0 0 15px 0; color: #d63638; font-size: 16px;">🐛 BG CAI Debug Panel</h2>
+			<h2 style="margin: 0 0 15px 0; color: #d63638; font-size: 16px;">🐛 Ayonto CAI Debug Panel</h2>
 			
 			<div style="background: white; padding: 15px; margin-bottom: 15px; border-left: 4px solid #2271b1;">
 				<h3 style="margin: 0 0 10px 0; color: #2271b1; font-size: 14px;">⏰ Current Time Data</h3>
@@ -337,7 +337,7 @@ class AS_CAI_Debug {
 			</div>
 
 			<div style="background: #d63638; color: white; padding: 10px; margin-top: 15px; text-align: center;">
-				<strong>Debug Mode Active</strong> | To disable: Go to WooCommerce → BG CAI Debug and uncheck "Enable Debug Mode", or remove ?as_cai_debug=1 from URL
+				<strong>Debug Mode Active</strong> | To disable: Go to WooCommerce → Ayonto CAI Debug and uncheck "Enable Debug Mode", or remove ?as_cai_debug=1 from URL
 			</div>
 		</div>
 		<?php
@@ -370,7 +370,7 @@ class AS_CAI_Debug {
 				'ajax_url'     => admin_url( 'admin-ajax.php' ),
 				'product_id'   => get_the_ID(),
 				'messages'     => array(
-					'debug_active'    => __( '🐛 BG CAI Debug Mode Active', 'as-camp-availability-integration' ),
+					'debug_active'    => __( '🐛 Ayonto CAI Debug Mode Active', 'as-camp-availability-integration' ),
 					'wrapper_found'   => __( 'Counter Wrapper Found:', 'as-camp-availability-integration' ),
 					'elements_found'  => __( 'Counter Elements Found:', 'as-camp-availability-integration' ),
 					'button_found'    => __( 'Seat Planner Button Found:', 'as-camp-availability-integration' ),
@@ -394,8 +394,8 @@ class AS_CAI_Debug {
 	public function add_debug_menu() {
 		add_submenu_page(
 			'woocommerce',
-			'BG CAI Debug',
-			'BG CAI Debug',
+			'Ayonto CAI Debug',
+			'Ayonto CAI Debug',
 			'manage_woocommerce',
 			'as-cai-debug',
 			array( $this, 'render_debug_page' )

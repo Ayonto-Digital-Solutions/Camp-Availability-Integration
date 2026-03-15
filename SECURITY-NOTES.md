@@ -135,7 +135,7 @@ Header set X-Frame-Options "SAMEORIGIN"
    ```
 
 3. **Admin-Panel:**
-   - WooCommerce → BG CAI Debug
+   - WooCommerce → Ayonto CAI Debug
    - Checkbox "Enable Debug Mode"
 
 ### Sicherheitsfeatures:

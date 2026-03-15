@@ -916,7 +916,7 @@ Text: Hell (#F8F8F8)
 
 **Warum wurde die Media Query entfernt?**
 
-Das Ayon-Theme ist ein **dunkles Theme** und soll immer dunkel bleiben. Die Browser-Einstellung "prefers-color-scheme" sollte das Plugin-Design nicht beeinflussen, da:
+Das ayonto-Theme ist ein **dunkles Theme** und soll immer dunkel bleiben. Die Browser-Einstellung "prefers-color-scheme" sollte das Plugin-Design nicht beeinflussen, da:
 
 1. Das Theme selbst die Farben vorgibt
 2. Plugin folgt dem Theme, nicht dem System
@@ -1089,9 +1089,9 @@ Auftragsstatus: Erfolgreich ✅
 
 ### 🎨 CHANGED - Theme-Farben Integration
 
-**Ayon Theme Colors:**
+**ayonto Theme Colors:**
 
-Die Farben wurden an das Ayon-Theme angepasst. Das Blau wurde durch das charakteristische Gold/Beige ersetzt.
+Die Farben wurden an das ayonto-Theme angepasst. Das Blau wurde durch das charakteristische Gold/Beige ersetzt.
 
 #### Changed - Farb-Schema
 
@@ -1113,7 +1113,7 @@ Die Farben wurden an das Ayon-Theme angepasst. Das Blau wurde durch das charakte
 #### Theme Integration
 
 ```css
-/* Ayon Theme Variables */
+/* ayonto Theme Variables */
 --e-global-color-primary: #B19E63;
 --e-global-color-text: #F8F8F8;
 --e-global-color-fecc2d2: #B19E63D9;
@@ -1158,7 +1158,7 @@ Die Farben wurden an das Ayon-Theme angepasst. Das Blau wurde durch das charakte
 - `assets/css/order-confirmation.css` - Alle Akzentfarben auf Gold geändert
 
 #### Benefits
-- **Konsistentes Design**: Passt perfekt zum Ayon-Theme
+- **Konsistentes Design**: Passt perfekt zum ayonto-Theme
 - **Marken-Identität**: Gold/Beige ist die charakteristische Farbe
 - **Bessere Integration**: Keine störenden fremden Farben
 - **Professioneller Look**: Einheitliches Erscheinungsbild
@@ -4932,7 +4932,7 @@ $end_datetime_ts     = strtotime( $end_date . ' ' . gmdate( 'H:i', $end_time ) )
 ## [1.1.3] - 2025-10-27
 
 ### 🎨 Geändert - AYON FARBSCHEMA
-- **CSS komplett überarbeitet:** Counter verwendet jetzt das Ayon-Farbschema
+- **CSS komplett überarbeitet:** Counter verwendet jetzt das ayonto-Farbschema
 - **Hauptfarben angepasst:**
   - Primary: #B19E63 (Gold)
   - Secondary: #54595F (Dunkelgrau)
@@ -4954,7 +4954,7 @@ $end_datetime_ts     = strtotime( $end_date . ' ' . gmdate( 'H:i', $end_time ) )
 
 ### Accessibility
 - **High Contrast Mode:** Gold-Borders und intensivere Farben
-- **Print Styles:** Ayon-Farben auch im Druck
+- **Print Styles:** ayonto-Farben auch im Druck
 - **Reduced Motion:** Weiterhin unterstützt
 
 ### Kompatibilität

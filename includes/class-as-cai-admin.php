@@ -312,7 +312,7 @@ class AS_CAI_Admin {
 					<div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 5px;">
 						<?php esc_html_e( 'Powered by', 'as-camp-availability-integration' ); ?>
 					</div>
-					<div style="font-size: 1.125rem; font-weight: 600;">Ayon.to</div>
+					<div style="font-size: 1.125rem; font-weight: 600;">ayon.to</div>
 				</div>
 			</div>
 		</div>

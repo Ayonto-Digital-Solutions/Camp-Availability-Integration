@@ -121,7 +121,7 @@ Das Plugin arbeitet automatisch, sobald es aktiviert ist:
 **Bei ALLEN Produkttypen:**
 1. Der Countdown-Timer wird automatisch angezeigt, wenn die Produkt-Verfügbarkeit aktiviert ist
 2. Timer zeigt Countdown bis zum Verfügbarkeitsbeginn
-3. Einheitliches Ayon Custom Design
+3. Einheitliches ayonto Custom Design
 
 **Bei "Auditorium" Produkten:**
 1. Der "Parzelle auswählen"-Button wird ausgeblendet, wenn das Produkt noch nicht verfügbar ist
@@ -260,4 +260,4 @@ Entwickelt für professionelle Camp-Buchungssysteme mit Integration von:
 
 ---
 
-**Powered by Ayon.de**
+**Powered by ayon.to**

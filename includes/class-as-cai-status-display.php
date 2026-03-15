@@ -608,7 +608,7 @@ class AS_CAI_Status_Display {
 		foreach ( $notifications as $notification ) {
 			$subject = 'BG Camp: Parzellen wieder verfügbar!';
 			$message = sprintf(
-				"Gute Nachrichten!\n\nEs sind wieder Parzellen verfügbar für \"%s\".\n\nJetzt buchen: %s\n\n---\nAyon Camp",
+				"Gute Nachrichten!\n\nEs sind wieder Parzellen verfügbar für \"%s\".\n\nJetzt buchen: %s\n\n---\nayonto",
 				$product_name,
 				get_permalink( $product_id )
 			);

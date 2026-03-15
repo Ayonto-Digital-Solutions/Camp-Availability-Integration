@@ -1,6 +1,6 @@
 /**
  * AS Camp Availability Integration - Frontend Styles
- * Ayon Custom Color Scheme
+ * ayonto Custom Color Scheme
  *
  * @package AS_Camp_Availability_Integration
  */
@@ -9,7 +9,7 @@
 .as-cai-availability-counter-wrapper {
 	margin: 20px 0;
 	padding: 20px;
-	/* Ayon Color Scheme: Dark to Gold Gradient */
+	/* ayonto Color Scheme: Dark to Gold Gradient */
 	background: linear-gradient(135deg, #25282B 0%, #54595F 50%, #B19E63 100%);
 	border-radius: 12px;
 	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);

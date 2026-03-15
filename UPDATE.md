@@ -2073,7 +2073,7 @@ private function log( $level, $message, $context = array() ) {
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -2553,7 +2553,7 @@ Keine bekannten Probleme in v1.3.53.
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -2997,7 +2997,7 @@ Klarere Buchungs-Terminologie und volle Breite für bessere User Experience im C
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -3109,7 +3109,7 @@ Datei endet bei Zeile 543 mit den Responsive-Styles für Mobile. Keine Media Que
 
 ### Warum ist das wichtig?
 
-**Das Ayon-Theme ist IMMER dunkel.**
+**Das ayonto-Theme ist IMMER dunkel.**
 
 Browser-Präferenz `prefers-color-scheme` sollte **Theme-Plugins nicht beeinflussen**, weil:
 
@@ -3250,7 +3250,7 @@ CDN/Cloudflare Cache purgen
 
 ### Für andere Themes
 
-Falls das Plugin auf einem **hellen Theme** verwendet wird (nicht Ayon), können Custom CSS-Anpassungen gemacht werden:
+Falls das Plugin auf einem **hellen Theme** verwendet wird (nicht ayonto), können Custom CSS-Anpassungen gemacht werden:
 
 ```css
 /* Custom CSS für helle Themes */
@@ -3269,11 +3269,11 @@ Falls das Plugin auf einem **hellen Theme** verwendet wird (nicht Ayon), können
 
 ### F: Warum wurde die Media Query nicht angepasst statt entfernt?
 
-**A:** Das Ayon-Theme ist immer dunkel. Eine Media Query für Light Mode macht keinen Sinn, da das Theme sich nicht ändert.
+**A:** Das ayonto-Theme ist immer dunkel. Eine Media Query für Light Mode macht keinen Sinn, da das Theme sich nicht ändert.
 
 ### F: Was ist mit Nutzern auf hellen Themes?
 
-**A:** Das Plugin ist für das Ayon-Theme entwickelt (siehe Theme-Farben #B19E63). Für andere Themes können Custom CSS-Anpassungen verwendet werden.
+**A:** Das Plugin ist für das ayonto-Theme entwickelt (siehe Theme-Farben #B19E63). Für andere Themes können Custom CSS-Anpassungen verwendet werden.
 
 ### F: Betrifft das auch das Backend?
 
@@ -3318,7 +3318,7 @@ Der Bug ist vollständig behoben.
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -3694,7 +3694,7 @@ h3 { color: var(--as-cai-primary-color); }  /* Gold aus Theme! */
 ```
 
 **Ergebnis:**
-- ✅ Perfekte Anpassung an Ayon-Theme
+- ✅ Perfekte Anpassung an ayonto-Theme
 - ✅ Automatische Farb-Updates wenn Theme sich ändert
 - ✅ Konsistentes Erscheinungsbild
 
@@ -3923,11 +3923,11 @@ Sende Verbesserungsvorschläge an: kundensupport@zoobro.de
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
-# UPDATE v1.3.49 - Ayon Theme-Farben 🎨
+# UPDATE v1.3.49 - ayonto Theme-Farben 🎨
 
 **Release-Datum:** 2025-10-30  
 **Update-Typ:** Theme Integration - Farb-Anpassung  
@@ -3939,9 +3939,9 @@ Sende Verbesserungsvorschläge an: kundensupport@zoobro.de
 
 ### Problem
 
-In v1.3.48 wurden **blaue Akzentfarben** verwendet (#4a9eff), die nicht zum Ayon-Theme passen.
+In v1.3.48 wurden **blaue Akzentfarben** verwendet (#4a9eff), die nicht zum ayonto-Theme passen.
 
-**Ayon Theme verwendet:**
+**ayonto Theme verwendet:**
 - Primärfarbe: **#B19E63** (Gold/Beige)
 - Textfarbe: **#F8F8F8** (Hell)
 - Akzentfarbe: **#B19E63D9** (Gold mit Transparenz)
@@ -3956,7 +3956,7 @@ In v1.3.48 wurden **blaue Akzentfarben** verwendet (#4a9eff), die nicht zum Ayon
 - ✅ Kategorie-Border: Gold statt Blau
 
 **Ergebnis:**
-Perfekt integriert ins Ayon-Theme! 🎨
+Perfekt integriert ins ayonto-Theme! 🎨
 
 ---
 
@@ -4110,7 +4110,7 @@ Perfekt integriert ins Ayon-Theme! 🎨
 
 ### Elementor Theme Variables
 
-Die verwendeten Farben stammen direkt aus dem Ayon-Theme:
+Die verwendeten Farben stammen direkt aus dem ayonto-Theme:
 
 ```css
 :root {
@@ -4140,12 +4140,12 @@ Die verwendeten Farben stammen direkt aus dem Ayon-Theme:
 ## 💡 VORTEILE
 
 ### Design-Konsistenz
-- ✅ **Einheitliches Erscheinungsbild** mit dem Ayon-Theme
+- ✅ **Einheitliches Erscheinungsbild** mit dem ayonto-Theme
 - ✅ **Keine störenden Fremdfarben** mehr
 - ✅ **Professioneller Look** durch Marken-Farben
 
 ### Marken-Identität
-- ✅ **Gold/Beige** ist die charakteristische Ayon-Farbe
+- ✅ **Gold/Beige** ist die charakteristische ayonto-Farbe
 - ✅ **Wiedererkennungswert** durch konsistente Farbgebung
 - ✅ **Vertrauen** durch professionelles Design
 
@@ -4182,7 +4182,7 @@ Die Farben passen jetzt perfekt zum Theme:
 ## 🧪 TESTING
 
 ### Getestet mit:
-- [x] Ayon Theme (Dark Mode)
+- [x] ayonto Theme (Dark Mode)
 - [x] Desktop (1920px, 1440px, 1280px)
 - [x] Tablet (768px, 1024px)
 - [x] Mobile (375px, 414px, 480px)
@@ -4216,7 +4216,7 @@ Mögliche Features für v1.3.50:
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -4590,7 +4590,7 @@ Mögliche Features für v1.3.49:
 
 **Entwickler:** Marc Mirschel  
 **Support:** kundensupport@zoobro.de  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -7563,7 +7563,7 @@ Falls **immer noch** Probleme:
 
 **Entwickler:** Marc Mirschel  
 **Plugin URI:** https://ayon.to  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -7931,7 +7931,7 @@ Bei Fragen oder für Debug-Logs:
 
 **Entwickler:** Marc Mirschel  
 **Plugin URI:** https://ayon.to  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -8398,7 +8398,7 @@ Bei Fragen oder Problemen:
 
 **Entwickler:** Marc Mirschel  
 **Plugin URI:** https://ayon.to  
-**Powered by:** Ayon.de
+**Powered by:** ayon.to
 
 ---
 
@@ -8674,7 +8674,7 @@ Falls Probleme auftreten:
 Bei Fragen oder Problemen:
 - **Email:** kundensupport@zoobro.de
 - **Entwickler:** Marc Mirschel
-- **Powered by:** Ayon.de
+- **Powered by:** ayon.to
 
 ---
 
@@ -8964,7 +8964,7 @@ Falls Probleme auftreten:
 Bei Fragen oder Problemen:
 - **Email:** kundensupport@zoobro.de
 - **Entwickler:** Marc Mirschel
-- **Powered by:** Ayon.de
+- **Powered by:** ayon.to
 
 ---
 
@@ -9293,7 +9293,7 @@ Auch ohne HTML-Konvertierung sehr gut lesbar!
 ---
 
 **Entwickler:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Support:** kundensupport@zoobro.de
 
 ---
@@ -9615,7 +9615,7 @@ foreach ( $code_blocks as $placeholder => $code_html ) {
 ---
 
 **Entwickler:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Support:** kundensupport@zoobro.de
 
 ---
@@ -9908,7 +9908,7 @@ preg_replace_callback( $pattern, function( $matches ) {
 ---
 
 **Entwickler:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Support:** kundensupport@zoobro.de
 
 ---
@@ -12278,7 +12278,7 @@ Advanced Debug System macht Troubleshooting **10x einfacher**!
 ---
 
 **Entwickelt von:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Version:** 1.3.28  
 **Lizenz:** GPL v2 or later
 
@@ -12724,7 +12724,7 @@ Nach dem Update testen:
 ---
 
 **Entwickelt von:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Version:** 1.3.27  
 **Lizenz:** GPL v2 or later
 
@@ -13171,7 +13171,7 @@ Nach v1.3.26 ist das Debug-System so organisiert:
 ---
 
 **Entwickelt von:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Version:** 1.3.26  
 **Lizenz:** GPL v2 or later
 # 🔧 UPDATE 1.3.25 - Critical Bugfix
@@ -13476,7 +13476,7 @@ in class-as-cai-admin.php on line 898
 ---
 
 **Developed by:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Support:** kundensupport@zoobro.de
 # 🎨 UPDATE 1.3.24 - Settings UI Modernisierung & Code-Formatierung Fix
 
@@ -13792,7 +13792,7 @@ Alle Settings-Tabs verwenden jetzt konsistente Styles:
 ---
 
 **Entwickelt von:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Version:** 1.3.24  
 **Lizenz:** GPL v2 or later
 # 🎨 UPDATE 1.3.23 - Settings & Documentation Modernization
@@ -14101,7 +14101,7 @@ AS_CAI_Debug_Panel::instance()->render_page();
 ---
 
 **Entwickelt von:** Marc Mirschel  
-**Powered by:** Ayon.de  
+**Powered by:** ayon.to  
 **Version:** 1.3.23  
 **Build-Datum:** 2025-10-28
 # 🎨 UPDATE 1.3.22 - Design-Vereinheitlichung Admin-Oberfläche

@@ -1,14 +1,18 @@
 <?php
 /**
- * Status Display Component — Verfügbarkeits-Anzeige (v1.3.79).
+ * Status Display Component — Verfügbarkeits-Anzeige (v1.3.77).
  *
- * Uses WooCommerce stock as the SINGLE source of truth.
- * Stachethemes syncs stock automatically (decrements on order,
- * increments on refund/cancel), so stock_quantity = available seats.
+ * Dual-Source Strategy:
+ * - Auditorium (Stachethemes): Seat Plan JSON + _taken_seat Meta
+ * - Simple (WooCommerce): get_stock_quantity() + Order-Counting
+ *
+ * WICHTIG: Auditorium_Product::managing_stock() gibt IMMER false zurück,
+ * get_stock_quantity() gibt IMMER 0 zurück — WC Stock ist für Auditorium
+ * Produkte NICHT nutzbar.
  *
  * @package AS_Camp_Availability_Integration
  * @since   1.3.59
- * @updated 1.3.79
+ * @updated 1.3.77
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,6 +23,9 @@ class AS_CAI_Status_Display {
 
 	/** @var AS_CAI_Status_Display|null */
 	private static $instance = null;
+
+	/** @var array Unterstützte Produkttypen */
+	private static $supported_types = array( 'auditorium', 'simple' );
 
 	public static function instance() {
 		if ( null === self::$instance ) {
@@ -46,8 +53,23 @@ class AS_CAI_Status_Display {
 	}
 
 	/**
-	 * Enqueue status display CSS and JS on product pages.
+	 * Check if a product type is supported.
 	 */
+	private static function is_supported_type( $product ) {
+		return $product && in_array( $product->get_type(), self::$supported_types, true );
+	}
+
+	/**
+	 * Get the unit label for a product type.
+	 */
+	private static function get_unit_label( $product ) {
+		return 'auditorium' === $product->get_type() ? 'Parzellen' : 'Einheiten';
+	}
+
+	// ─────────────────────────────────────────────
+	// Assets
+	// ─────────────────────────────────────────────
+
 	public function enqueue_assets() {
 		if ( ! is_product() ) {
 			return;
@@ -57,7 +79,7 @@ class AS_CAI_Status_Display {
 		if ( ! $product || ! is_object( $product ) ) {
 			$product = wc_get_product( get_the_ID() );
 		}
-		if ( ! $product || 'auditorium' !== $product->get_type() ) {
+		if ( ! self::is_supported_type( $product ) ) {
 			return;
 		}
 
@@ -86,9 +108,10 @@ class AS_CAI_Status_Display {
 		);
 	}
 
-	/**
-	 * Conditionally render the status box.
-	 */
+	// ─────────────────────────────────────────────
+	// Rendering
+	// ─────────────────────────────────────────────
+
 	public function maybe_render_status_box() {
 		if ( ! is_product() ) {
 			return;
@@ -98,7 +121,7 @@ class AS_CAI_Status_Display {
 		if ( ! $product || ! is_object( $product ) ) {
 			$product = wc_get_product( get_the_ID() );
 		}
-		if ( ! $product || 'auditorium' !== $product->get_type() ) {
+		if ( ! self::is_supported_type( $product ) ) {
 			return;
 		}
 
@@ -108,224 +131,10 @@ class AS_CAI_Status_Display {
 		}
 		$rendered = true;
 
-		// Only render when product is available (countdown expired).
-		$availability = AS_CAI_Availability_Check::get_product_availability( $product->get_id() );
-		if ( ! $availability['is_available'] ) {
-			return;
-		}
-
+		// Kein Countdown-Check — Box wird IMMER gerendert.
 		$this->render_status_box( $product->get_id() );
 	}
 
-	/**
-	 * Get availability data — WooCommerce Stock is the ONLY source of truth.
-	 *
-	 * available = get_stock_quantity()  — WC manages this, Stachethemes syncs it
-	 * sold      = count from WC orders with valid statuses only
-	 * total     = available + sold
-	 *
-	 * @param int $product_id Product ID.
-	 * @return array|null Status data or null if not applicable.
-	 */
-	public static function get_detailed_availability_status( $product_id ) {
-		$product = wc_get_product( $product_id );
-		if ( ! $product || 'auditorium' !== $product->get_type() ) {
-			return null;
-		}
-
-		// ── WooCommerce Stock as primary source ──
-		$available  = 0;
-		$sold_seats = self::count_sold_seats_from_orders( $product_id );
-
-		if ( $product->managing_stock() ) {
-			$stock_qty = $product->get_stock_quantity();
-			$available = ( null !== $stock_qty ) ? max( 0, (int) $stock_qty ) : 0;
-		}
-
-		// If WC stock not available, try Stachethemes get_taken_seats as fallback for sold count.
-		if ( 0 === $sold_seats && method_exists( $product, 'get_taken_seats' ) ) {
-			$taken      = $product->get_taken_seats();
-			$sold_seats = is_array( $taken ) ? count( $taken ) : 0;
-		}
-
-		$total = $available + $sold_seats;
-
-		// If we have no data at all, don't display.
-		if ( $total <= 0 ) {
-			return null;
-		}
-
-		// Count reserved seats (in carts).
-		$reserved = self::count_reserved_seats( $product_id );
-
-		// Available for booking = stock minus reserved-in-carts.
-		$bookable     = max( 0, $available - $reserved );
-		$percent_free = ( $bookable / $total ) * 100;
-
-		// Determine status.
-		if ( $bookable <= 0 && $available <= 0 ) {
-			$status = 'sold_out';
-		} elseif ( $bookable <= 0 && $reserved > 0 ) {
-			$status = 'reserved_full';
-		} elseif ( $percent_free > 20 ) {
-			$status = 'available';
-		} elseif ( $percent_free > 5 ) {
-			$status = 'limited';
-		} else {
-			$status = 'critical';
-		}
-
-		return array(
-			'status'       => $status,
-			'total'        => $total,
-			'available'    => $available,
-			'reserved'     => $reserved,
-			'sold'         => $sold_seats,
-			'percent_free' => round( $percent_free, 1 ),
-			'last_updated' => time(),
-		);
-	}
-
-	/**
-	 * Count sold seats from WooCommerce orders (valid statuses only).
-	 *
-	 * Only counts: processing, completed, on-hold, pending.
-	 * Does NOT count: refunded, cancelled, failed, trash.
-	 *
-	 * Uses seat ID deduplication to prevent double-counting
-	 * when the same seat appears in multiple orders.
-	 *
-	 * @param int $product_id Product ID.
-	 * @return int Number of sold seats.
-	 */
-	private static function count_sold_seats_from_orders( $product_id ) {
-		$valid_statuses = array( 'wc-processing', 'wc-completed', 'wc-on-hold', 'wc-pending' );
-
-		$orders = wc_get_orders( array(
-			'limit'  => -1,
-			'status' => $valid_statuses,
-			'return' => 'ids',
-		) );
-
-		$sold_count    = 0;
-		$counted_seats = array();
-
-		foreach ( $orders as $order_id ) {
-			$order = wc_get_order( $order_id );
-			if ( ! $order ) {
-				continue;
-			}
-
-			foreach ( $order->get_items() as $item ) {
-				if ( (int) $item->get_product_id() !== (int) $product_id ) {
-					continue;
-				}
-
-				// Try to get specific seat IDs to avoid double-counting.
-				$seat_meta = $item->get_meta( '_stachethemes_seat_planner_data', true );
-				if ( ! empty( $seat_meta ) ) {
-					$seat_ids = self::extract_seat_ids( $seat_meta );
-					foreach ( $seat_ids as $seat_id ) {
-						if ( ! in_array( $seat_id, $counted_seats, true ) ) {
-							$counted_seats[] = $seat_id;
-							$sold_count++;
-						}
-					}
-				} else {
-					$sold_count += max( 1, $item->get_quantity() );
-				}
-			}
-		}
-
-		return $sold_count;
-	}
-
-	/**
-	 * Count reserved seats (in carts / Stachethemes transients).
-	 *
-	 * @param int $product_id Product ID.
-	 * @return int Number of reserved seats.
-	 */
-	private static function count_reserved_seats( $product_id ) {
-		$reserved = 0;
-
-		// Our reservation system.
-		if ( class_exists( 'AS_CAI_Reservation_DB' ) ) {
-			$db = AS_CAI_Reservation_DB::instance();
-			$reserved = max( $reserved, (int) $db->get_reserved_stock_for_product( $product_id ) );
-		}
-
-		// Stachethemes transient-based reservations.
-		global $wpdb;
-		$stache_count = (int) $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->options}
-			 WHERE option_name LIKE %s
-			 AND option_name NOT LIKE %s",
-			$wpdb->esc_like( '_transient_stachesepl_reserved_seat_' . $product_id . '_' ) . '%',
-			$wpdb->esc_like( '_transient_timeout_stachesepl_reserved_seat_' . $product_id . '_' ) . '%'
-		) );
-
-		return max( $reserved, $stache_count );
-	}
-
-	/**
-	 * Extract seat IDs from Stachethemes meta data.
-	 *
-	 * @param mixed $seat_meta Seat meta data.
-	 * @return array Array of seat ID strings.
-	 */
-	private static function extract_seat_ids( $seat_meta ) {
-		$ids = array();
-
-		if ( is_string( $seat_meta ) ) {
-			$decoded = json_decode( $seat_meta, true );
-			if ( json_last_error() === JSON_ERROR_NONE ) {
-				$seat_meta = $decoded;
-			} else {
-				return array( $seat_meta );
-			}
-		}
-
-		if ( is_object( $seat_meta ) ) {
-			$seat_meta = (array) $seat_meta;
-		}
-
-		// Single seat.
-		if ( is_array( $seat_meta ) ) {
-			foreach ( array( 'seatId', 'label', 'seat' ) as $key ) {
-				if ( isset( $seat_meta[ $key ] ) ) {
-					return array( (string) $seat_meta[ $key ] );
-				}
-			}
-		}
-
-		// Array of seats.
-		if ( is_array( $seat_meta ) ) {
-			foreach ( $seat_meta as $entry ) {
-				if ( is_object( $entry ) ) {
-					$entry = (array) $entry;
-				}
-				if ( is_array( $entry ) ) {
-					foreach ( array( 'seatId', 'label', 'seat' ) as $key ) {
-						if ( isset( $entry[ $key ] ) ) {
-							$ids[] = (string) $entry[ $key ];
-							break;
-						}
-					}
-				} elseif ( is_string( $entry ) || is_numeric( $entry ) ) {
-					$ids[] = (string) $entry;
-				}
-			}
-		}
-
-		return $ids;
-	}
-
-	/**
-	 * Render the status box HTML — clean, minimal, correct.
-	 *
-	 * @param int $product_id Product ID.
-	 */
 	public function render_status_box( $product_id ) {
 		$data = self::get_detailed_availability_status( $product_id );
 		if ( ! $data ) {
@@ -333,7 +142,8 @@ class AS_CAI_Status_Display {
 		}
 
 		$status = $data['status'];
-		$config = self::get_status_config( $status );
+		$config = self::get_status_config( $status, $data['label'] );
+		$label  = $data['label'];
 		?>
 		<div class="as-cai-status-box status-<?php echo esc_attr( $status ); ?>"
 			 data-product-id="<?php echo esc_attr( $product_id ); ?>"
@@ -346,7 +156,7 @@ class AS_CAI_Status_Display {
 
 			<div class="status-details">
 				<div class="availability-main">
-					<strong><?php echo esc_html( $data['available'] ); ?> von <?php echo esc_html( $data['total'] ); ?> Parzellen</strong>
+					<strong><?php echo esc_html( $data['available'] ); ?> von <?php echo esc_html( $data['total'] ); ?> <?php echo esc_html( $label ); ?></strong>
 					<?php echo esc_html( $config['subtitle'] ); ?>
 				</div>
 
@@ -404,10 +214,7 @@ class AS_CAI_Status_Display {
 		<?php
 	}
 
-	/**
-	 * Get status configuration.
-	 */
-	private static function get_status_config( $status ) {
+	private static function get_status_config( $status, $label = 'Parzellen' ) {
 		$configs = array(
 			'available' => array(
 				'icon'         => '✓',
@@ -417,19 +224,19 @@ class AS_CAI_Status_Display {
 			),
 			'limited' => array(
 				'icon'         => '⚠',
-				'title'        => 'Nur noch wenige Parzellen',
+				'title'        => 'Nur noch wenige ' . $label,
 				'subtitle'     => 'verfügbar',
 				'urgency_text' => 'Hohe Nachfrage',
 			),
 			'critical' => array(
 				'icon'         => '⚡',
-				'title'        => 'Letzte Parzellen!',
+				'title'        => 'Letzte ' . $label . '!',
 				'subtitle'     => 'verfügbar',
 				'urgency_text' => 'JETZT BUCHEN!',
 			),
 			'reserved_full' => array(
 				'icon'         => '🔒',
-				'title'        => 'Alle Parzellen reserviert',
+				'title'        => 'Alle ' . $label . ' reserviert',
 				'subtitle'     => 'in Warenkörben',
 				'urgency_text' => '',
 			),
@@ -444,9 +251,226 @@ class AS_CAI_Status_Display {
 		return isset( $configs[ $status ] ) ? $configs[ $status ] : $configs['available'];
 	}
 
+	// ─────────────────────────────────────────────
+	// Dual-Source Availability Status
+	// ─────────────────────────────────────────────
+
 	/**
-	 * AJAX handler: Get current status data.
+	 * Get availability data — Dispatcher for product type.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array|null Status data or null if not applicable.
 	 */
+	public static function get_detailed_availability_status( $product_id ) {
+		$product = wc_get_product( $product_id );
+		if ( ! $product ) {
+			return null;
+		}
+
+		$type = $product->get_type();
+
+		if ( 'auditorium' === $type ) {
+			return self::get_auditorium_status( $product );
+		}
+
+		if ( 'simple' === $type && $product->managing_stock() ) {
+			return self::get_simple_product_status( $product );
+		}
+
+		return null;
+	}
+
+	/**
+	 * Auditorium-Produkte: Stachethemes Seat Plan als Datenquelle.
+	 *
+	 * Liest den Seat Plan JSON und zählt Seats nach Status.
+	 * get_taken_seats() enthält bereits Slot-Reservation-Transients.
+	 *
+	 * @param WC_Product $product Auditorium product.
+	 * @return array|null
+	 */
+	private static function get_auditorium_status( $product ) {
+		// Seat Plan JSON lesen.
+		if ( ! method_exists( $product, 'get_seat_plan_data' ) ) {
+			return null;
+		}
+
+		$seat_plan = $product->get_seat_plan_data( 'object' );
+		if ( ! $seat_plan || ! isset( $seat_plan->objects ) || ! is_array( $seat_plan->objects ) ) {
+			return null;
+		}
+
+		// Taken Seats: _taken_seat Meta + Slot Reservation Transients (via Filter).
+		$taken_seats = array();
+		if ( method_exists( $product, 'get_taken_seats' ) ) {
+			$taken_seats = $product->get_taken_seats();
+			if ( ! is_array( $taken_seats ) ) {
+				$taken_seats = array();
+			}
+		}
+
+		$total       = 0;
+		$available   = 0;
+		$sold        = 0;
+		$unavailable = 0;
+
+		foreach ( $seat_plan->objects as $obj ) {
+			if ( ! isset( $obj->type ) || 'seat' !== $obj->type ) {
+				continue;
+			}
+			if ( empty( $obj->seatId ) ) {
+				continue;
+			}
+
+			$total++;
+			$status   = isset( $obj->status ) ? $obj->status : 'available';
+			$is_taken = in_array( $obj->seatId, $taken_seats, true );
+
+			if ( $is_taken || 'sold-out' === $status ) {
+				$sold++;
+			} elseif ( 'unavailable' === $status ) {
+				$unavailable++;
+			} else {
+				// 'available' und 'on-site' zählen als verfügbar.
+				$available++;
+			}
+		}
+
+		if ( $total <= 0 ) {
+			return null;
+		}
+
+		// Reservierte Seats: Nur unser eigenes System (Stachethemes-Reservierungen
+		// sind bereits in taken_seats via Filter enthalten).
+		$reserved = self::count_own_reserved_seats( $product->get_id() );
+
+		return self::build_status_result( $total, $available, $sold, $reserved, 'Parzellen' );
+	}
+
+	/**
+	 * Simple-Produkte: WooCommerce Stock als Datenquelle.
+	 *
+	 * @param WC_Product $product Simple product with stock management.
+	 * @return array|null
+	 */
+	private static function get_simple_product_status( $product ) {
+		$product_id = $product->get_id();
+		$stock_qty  = $product->get_stock_quantity();
+		$available  = ( null !== $stock_qty ) ? max( 0, (int) $stock_qty ) : 0;
+
+		// Verkaufte Einheiten aus WC Orders zählen.
+		$sold = self::count_sold_units_from_orders( $product_id );
+
+		// Total = Verfügbar + Verkauft.
+		$total = $available + $sold;
+
+		if ( $total <= 0 ) {
+			// Kein Total ermittelbar — nur verfügbare Menge anzeigen.
+			if ( $available <= 0 ) {
+				return null;
+			}
+			$total = $available;
+		}
+
+		// Reservierte Einheiten aus unserem Reservierungssystem.
+		$reserved = self::count_own_reserved_seats( $product_id );
+
+		return self::build_status_result( $total, $available, $sold, $reserved, 'Einheiten' );
+	}
+
+	/**
+	 * Build the standardized status result array.
+	 */
+	private static function build_status_result( $total, $available, $sold, $reserved, $label ) {
+		$bookable     = max( 0, $available - $reserved );
+		$percent_free = ( $total > 0 ) ? ( $bookable / $total ) * 100 : 0;
+
+		// Status bestimmen.
+		if ( $available <= 0 ) {
+			$status = 'sold_out';
+		} elseif ( $bookable <= 0 && $reserved > 0 ) {
+			$status = 'reserved_full';
+		} elseif ( $percent_free > 20 ) {
+			$status = 'available';
+		} elseif ( $percent_free > 5 ) {
+			$status = 'limited';
+		} else {
+			$status = 'critical';
+		}
+
+		return array(
+			'status'       => $status,
+			'total'        => $total,
+			'available'    => $available,
+			'reserved'     => $reserved,
+			'sold'         => $sold,
+			'percent_free' => round( $percent_free, 1 ),
+			'label'        => $label,
+			'last_updated' => time(),
+		);
+	}
+
+	// ─────────────────────────────────────────────
+	// Counting Helpers
+	// ─────────────────────────────────────────────
+
+	/**
+	 * Count sold units from WC orders (for Simple products only).
+	 *
+	 * Uses Stachethemes' custom order query filter for auditorium products,
+	 * but this method is only called for Simple products.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return int
+	 */
+	private static function count_sold_units_from_orders( $product_id ) {
+		$valid_statuses = array( 'wc-processing', 'wc-completed', 'wc-on-hold' );
+
+		$orders = wc_get_orders( array(
+			'limit'  => -1,
+			'status' => $valid_statuses,
+			'return' => 'ids',
+		) );
+
+		$sold_count = 0;
+
+		foreach ( $orders as $order_id ) {
+			$order = wc_get_order( $order_id );
+			if ( ! $order ) {
+				continue;
+			}
+
+			foreach ( $order->get_items() as $item ) {
+				if ( (int) $item->get_product_id() === (int) $product_id ) {
+					$sold_count += max( 1, $item->get_quantity() );
+				}
+			}
+		}
+
+		return $sold_count;
+	}
+
+	/**
+	 * Count reserved seats/units from our own reservation system only.
+	 *
+	 * Stachethemes Slot Reservation transients are NOT counted here
+	 * because get_taken_seats() already includes them.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return int
+	 */
+	private static function count_own_reserved_seats( $product_id ) {
+		if ( class_exists( 'AS_CAI_Reservation_DB' ) ) {
+			$db = AS_CAI_Reservation_DB::instance();
+			return max( 0, (int) $db->get_reserved_stock_for_product( $product_id ) );
+		}
+		return 0;
+	}
+
+	// ─────────────────────────────────────────────
+	// AJAX Handlers
+	// ─────────────────────────────────────────────
+
 	public function ajax_get_status() {
 		check_ajax_referer( 'as_cai_status_nonce', 'nonce' );
 
@@ -463,9 +487,6 @@ class AS_CAI_Status_Display {
 		wp_send_json_success( $data );
 	}
 
-	/**
-	 * AJAX handler: Register email notification.
-	 */
 	public function ajax_register_notification() {
 		check_ajax_referer( 'as_cai_status_nonce', 'nonce' );
 
@@ -489,7 +510,6 @@ class AS_CAI_Status_Display {
 
 		self::maybe_create_notifications_table();
 
-		// Check duplicate.
 		$exists = $wpdb->get_var( $wpdb->prepare(
 			"SELECT COUNT(*) FROM {$table_name} WHERE product_id = %d AND email = %s AND status = 'pending'",
 			$product_id,
@@ -512,12 +532,11 @@ class AS_CAI_Status_Display {
 			array( '%d', '%s', '%s', '%s' )
 		);
 
-		wp_send_json_success( array( 'message' => 'Sie werden benachrichtigt, sobald Parzellen verfügbar sind.' ) );
+		$product      = wc_get_product( $product_id );
+		$unit_label   = $product ? self::get_unit_label( $product ) : 'Plätze';
+		wp_send_json_success( array( 'message' => "Sie werden benachrichtigt, sobald {$unit_label} verfügbar sind." ) );
 	}
 
-	/**
-	 * Create notifications table if it doesn't exist.
-	 */
 	public static function maybe_create_notifications_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'as_cai_notifications';
@@ -543,9 +562,10 @@ class AS_CAI_Status_Display {
 		dbDelta( $sql );
 	}
 
-	/**
-	 * Send notifications when seats become available.
-	 */
+	// ─────────────────────────────────────────────
+	// Notifications
+	// ─────────────────────────────────────────────
+
 	public function check_and_notify_on_cancellation( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( ! $order ) {
@@ -556,7 +576,7 @@ class AS_CAI_Status_Display {
 			$product_id = $item->get_product_id();
 			$product    = wc_get_product( $product_id );
 
-			if ( ! $product || 'auditorium' !== $product->get_type() ) {
+			if ( ! self::is_supported_type( $product ) ) {
 				continue;
 			}
 
@@ -567,9 +587,6 @@ class AS_CAI_Status_Display {
 		}
 	}
 
-	/**
-	 * Send pending notifications.
-	 */
 	public static function send_availability_notifications( $product_id ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'as_cai_notifications';
@@ -588,14 +605,16 @@ class AS_CAI_Status_Display {
 		}
 
 		$product      = wc_get_product( $product_id );
-		$product_name = $product ? $product->get_name() : 'Camp-Parzelle';
+		$product_name = $product ? $product->get_name() : 'Unterkunft';
+		$unit_label   = $product ? self::get_unit_label( $product ) : 'Plätze';
 
 		foreach ( $notifications as $notification ) {
 			wp_mail(
 				$notification->email,
-				'Ayonto Camp: Parzellen wieder verfügbar!',
+				"Ayonto Camp: {$unit_label} wieder verfügbar!",
 				sprintf(
-					"Gute Nachrichten!\n\nEs sind wieder Parzellen verfügbar für \"%s\".\n\nJetzt buchen: %s\n\n---\nayonto",
+					"Gute Nachrichten!\n\nEs sind wieder %s verfügbar für \"%s\".\n\nJetzt buchen: %s\n\n---\nayonto",
+					$unit_label,
 					$product_name,
 					get_permalink( $product_id )
 				)
@@ -611,53 +630,78 @@ class AS_CAI_Status_Display {
 		}
 	}
 
-	/**
-	 * Debug endpoint — admin only. Shows all raw data for diagnostics.
-	 *
-	 * Usage: /wp-admin/admin-ajax.php?action=as_cai_debug_status&product_id=XXX
-	 */
+	// ─────────────────────────────────────────────
+	// Debug Endpoint
+	// ─────────────────────────────────────────────
+
 	public function ajax_debug_status() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( 'Nicht autorisiert' );
 		}
 
 		$product_id = isset( $_GET['product_id'] ) ? absint( $_GET['product_id'] ) : 0;
+
 		if ( ! $product_id ) {
-			// Find first auditorium product.
+			// Find first auditorium product, then simple.
 			$products = wc_get_products( array(
 				'type'   => 'auditorium',
 				'limit'  => 1,
 				'return' => 'ids',
 			) );
+			if ( empty( $products ) ) {
+				$products = wc_get_products( array(
+					'type'   => 'simple',
+					'limit'  => 1,
+					'return' => 'ids',
+				) );
+			}
 			$product_id = ! empty( $products ) ? $products[0] : 0;
 		}
 
 		if ( ! $product_id ) {
-			wp_send_json_error( 'Kein Auditorium-Produkt gefunden' );
+			wp_send_json_error( 'Kein unterstütztes Produkt gefunden' );
 		}
 
 		$product = wc_get_product( $product_id );
-		$debug   = array(
-			'product_id'      => $product_id,
-			'product_type'    => $product ? $product->get_type() : 'NOT_FOUND',
-			'product_name'    => $product ? $product->get_name() : 'N/A',
-			'managing_stock'  => $product ? $product->managing_stock() : false,
-			'stock_quantity'  => $product ? $product->get_stock_quantity() : null,
-			'stock_status'    => $product ? $product->get_stock_status() : 'N/A',
-			'has_get_taken'   => $product && method_exists( $product, 'get_taken_seats' ),
-			'taken_seats'     => null,
-			'sold_from_orders' => self::count_sold_seats_from_orders( $product_id ),
-			'reserved_seats'  => self::count_reserved_seats( $product_id ),
-			'computed_status' => self::get_detailed_availability_status( $product_id ),
+		$type    = $product ? $product->get_type() : 'NOT_FOUND';
+
+		$debug = array(
+			'plugin_version' => AS_CAI_VERSION,
+			'product_id'     => $product_id,
+			'product_type'   => $type,
+			'product_name'   => $product ? $product->get_name() : 'N/A',
+			'data_source'    => 'auditorium' === $type ? 'stachethemes_seat_plan' : 'woocommerce_stock',
 		);
 
-		if ( $product && method_exists( $product, 'get_taken_seats' ) ) {
-			$taken = $product->get_taken_seats();
-			$debug['taken_seats'] = is_array( $taken ) ? count( $taken ) : $taken;
+		// Typ-spezifische Debug-Daten.
+		if ( 'auditorium' === $type && $product ) {
+			$seat_plan     = method_exists( $product, 'get_seat_plan_data' ) ? $product->get_seat_plan_data( 'object' ) : null;
+			$seat_count    = 0;
+			$total_objects = 0;
+
+			if ( $seat_plan && isset( $seat_plan->objects ) && is_array( $seat_plan->objects ) ) {
+				$total_objects = count( $seat_plan->objects );
+				foreach ( $seat_plan->objects as $obj ) {
+					if ( isset( $obj->type ) && 'seat' === $obj->type ) {
+						$seat_count++;
+					}
+				}
+			}
+
+			$taken = method_exists( $product, 'get_taken_seats' ) ? $product->get_taken_seats() : array();
+
+			$debug['seat_plan_total_objects'] = $total_objects;
+			$debug['seat_plan_seat_count']    = $seat_count;
+			$debug['taken_seats']             = is_array( $taken ) ? $taken : array();
+			$debug['taken_seats_count']       = is_array( $taken ) ? count( $taken ) : 0;
+		} elseif ( $product ) {
+			$debug['managing_stock']  = $product->managing_stock();
+			$debug['stock_quantity']  = $product->get_stock_quantity();
+			$debug['stock_status']    = $product->get_stock_status();
 		}
 
-		// Check availability window.
-		$debug['availability_check'] = AS_CAI_Availability_Check::get_product_availability( $product_id );
+		$debug['own_reserved_seats'] = self::count_own_reserved_seats( $product_id );
+		$debug['computed_status']    = self::get_detailed_availability_status( $product_id );
 
 		wp_send_json_success( $debug );
 	}

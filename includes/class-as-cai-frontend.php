@@ -377,7 +377,7 @@ class AS_CAI_Frontend {
 			return;
 		}
 
-		if ( 'auditorium' !== $product->get_type() ) {
+		if ( ! in_array( $product->get_type(), array( 'auditorium', 'simple' ), true ) ) {
 			return;
 		}
 
@@ -398,14 +398,11 @@ class AS_CAI_Frontend {
 			$should_hide = true;
 		}
 
-		// v1.3.74: Hide if sold out (no available seats).
+		// v1.3.77: Hide if sold out — uses dual-source status (Stachethemes / WC Stock).
 		if ( ! $should_hide ) {
-			$product_obj = wc_get_product( $product_id );
-			if ( $product_obj && $product_obj->managing_stock() ) {
-				$stock = $product_obj->get_stock_quantity();
-				if ( null !== $stock && $stock <= 0 ) {
-					$should_hide = true;
-				}
+			$status_data = AS_CAI_Status_Display::get_detailed_availability_status( $product_id );
+			if ( $status_data && in_array( $status_data['status'], array( 'sold_out', 'reserved_full' ), true ) ) {
+				$should_hide = true;
 			}
 		}
 
@@ -424,21 +421,22 @@ class AS_CAI_Frontend {
 		?>
 		<script type="text/javascript">
 		jQuery(document).ready(function($) {
+			// Auditorium (Stachethemes) buttons.
 			var $wrapper = $('.stachesepl-single-add-to-cart-button-wrapper');
 			var $root = $('.stachesepl-add-to-cart-button-root');
+			// Simple (WooCommerce) button.
+			var $wcButton = $('form.cart .single_add_to_cart_button');
 			var $statusBox = $('.as-cai-status-box');
 
-			$wrapper.removeClass('as-cai-button-hidden as-cai-button-visible');
-			$root.removeClass('as-cai-button-hidden as-cai-button-visible');
-			$statusBox.removeClass('as-cai-button-hidden as-cai-button-visible');
+			var $all = $wrapper.add($root).add($wcButton).add($statusBox);
+			$all.removeClass('as-cai-button-hidden as-cai-button-visible');
 
 			<?php if ( $should_hide ) : ?>
-			$wrapper.addClass('as-cai-button-hidden');
-			$root.addClass('as-cai-button-hidden');
-			$statusBox.addClass('as-cai-button-hidden');
+			$all.addClass('as-cai-button-hidden');
 			<?php else : ?>
 			$wrapper.addClass('as-cai-button-visible').css('display', 'block');
 			$root.addClass('as-cai-button-visible').css('display', '');
+			$wcButton.addClass('as-cai-button-visible').css('display', '');
 			$statusBox.addClass('as-cai-button-visible').css('display', '');
 			<?php endif; ?>
 		});
@@ -446,6 +444,7 @@ class AS_CAI_Frontend {
 		<style>
 			.stachesepl-single-add-to-cart-button-wrapper.as-cai-button-hidden,
 			.stachesepl-add-to-cart-button-root.as-cai-button-hidden,
+			.single_add_to_cart_button.as-cai-button-hidden,
 			.as-cai-status-box.as-cai-button-hidden {
 				display: none !important;
 			}

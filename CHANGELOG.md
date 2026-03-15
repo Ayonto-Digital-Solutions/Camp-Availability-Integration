@@ -7,42 +7,24 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
-## [1.3.80] - 2026-03-15
-
-### Fixed
-- **Status-Box wurde nicht angezeigt** — `managing_stock()` Guard entfernt, Fallback auf `get_taken_seats()` wenn WC Stock nicht verfügbar
-- **Debug-Endpoint hinzugefügt** — `/wp-admin/admin-ajax.php?action=as_cai_debug_status` zeigt alle Rohdaten (nur für Admins)
-- CSS-Duplikation bereinigt (`.status-reserved-full` war doppelt)
-
-## [1.3.79] - 2026-03-15
-
-### Rebuilt
-- **Status-Display-Box komplett neu aufgebaut — 100% korrekte Daten**
-  - **Einzige Datenquelle: WooCommerce Stock** (`get_stock_quantity()`) — kein Stachethemes-Fallback mehr
-  - Verfügbar = WC Stock (Stachethemes synchronisiert automatisch bei Bestellung/Erstattung)
-  - Verkauft = Nur Bestellungen mit gültigen Status (processing, completed, on-hold, pending)
-  - Gesamt = Verfügbar + Verkauft
-  - Reserviert = Parzellen in Warenkörben (eigenes Reservierungssystem + Stachethemes Transients)
-  - Entfernt: `count_from_seat_plan()`, `get_taken_seats()`-Fallback, `reserved_full`-Timer
-  - Neuer Status `reserved_full` wenn alle verfügbaren Parzellen in Warenkörben liegen
-  - Warteliste-Button auch bei `reserved_full` sichtbar
-
-## [1.3.78] - 2026-03-15
-
-### Removed
-- **Status-Display-Box komplett entfernt** — Verfügbarkeits-Anzeige war unzuverlässig und zeigte falsche Informationen
-  - Status-Box wird nicht mehr auf Produktseiten gerendert
-  - Sold-out-Prüfung für Button-Sichtbarkeit nutzt nun direkt WooCommerce Stock
-
 ## [1.3.77] - 2026-03-15
 
-### Fixed
-- **Verfügbarkeits-Zählung: WooCommerce Stock als primäre Quelle**
-  - Entfernt fehlerhaften `count_from_seat_plan()` Ansatz
-  - Nutzt `$product->get_stock_quantity()` direkt — Stachethemes synchronisiert Stock automatisch
-  - Erstattete Bestellungen werden korrekt als "frei" gezählt
+### Rebuilt
+- **Status-Display-Box: Dual-Source Datenarchitektur**
+  - **Auditorium-Produkte (Parzellen):** Stachethemes Seat Plan JSON + `_taken_seat` Meta als Datenquelle
+    - `$product->get_seat_plan_data('object')` liest den kompletten Sitzplan
+    - `$product->get_taken_seats()` liefert verkaufte + reservierte Seat-IDs
+    - Zählung nach Stachethemes-eigener Logik (`Product_Statistics::get_status_breakdown()`)
+    - WooCommerce Stock wird NICHT verwendet (`managing_stock()` = false bei Auditorium)
+  - **Simple-Produkte (Zimmer/Bungalows):** WooCommerce Stock Management als Datenquelle
+    - `$product->get_stock_quantity()` für verfügbare Einheiten
+    - Verkaufte Einheiten aus WC Orders (processing, completed, on-hold)
+  - Status-Box wird IMMER gerendert (kein Countdown-Guard mehr)
+  - Dynamische Labels: "Parzellen" (Auditorium) / "Einheiten" (Simple)
+  - Sold-Out-Erkennung für Button-Hiding nutzt jetzt die korrekte Dual-Source-Logik
+  - Auch WC "In den Warenkorb"-Button wird bei Sold-Out versteckt (Simple-Produkte)
 
-### Changed
+### Fixed
 - **Modal-Positionierung korrigiert** — Modal erscheint nun zentriert statt am Seitenende
 - **Status-Box an dunkles Template-Design angepasst** — Hintergrund `#25282B`, Text `#F8F8F8`, Gold-Akzente
 

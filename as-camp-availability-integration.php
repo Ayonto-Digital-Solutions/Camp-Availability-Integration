@@ -3,7 +3,7 @@
  * Plugin Name:       Camp Availability Integration
  * Plugin URI:        https://ayon.to
  * Description:       Integriert den Availability Scheduler Timer mit dem Stachethemes Seat Planner für Camp-Buchungen. Steuert die Anzeige des Parzellen-Auswahl-Buttons basierend auf dem Availability Timer. Inkl. 5-Minuten-Warenkorb-Reservierung und modernes Admin-Dashboard.
- * Version:           1.3.80
+ * Version:           1.3.77
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Author:            Marc Mirschel
@@ -41,7 +41,7 @@ final class AS_Camp_Availability_Integration {
      * @since 1.3.58
      * @var string
      */
-    const VERSION = '1.3.80';
+    const VERSION = '1.3.77';
 
 	/**
 	 * Plugin instance.
@@ -212,7 +212,7 @@ final class AS_Camp_Availability_Integration {
 		// Initialize Translation Override for Stachethemes (v1.3.59).
 		AS_CAI_Translation_Override::instance();
 
-		// Status Display System — rebuilt in v1.3.80 with WooCommerce Stock as single source of truth.
+		// Status Display System — v1.3.77: Dual-Source (Stachethemes Seat Plan + WC Stock).
 		AS_CAI_Status_Display::instance();
 
 		// Initialize GitHub Auto-Updater (v1.3.59).

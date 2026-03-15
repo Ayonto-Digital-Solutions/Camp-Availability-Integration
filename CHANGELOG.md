@@ -7,6 +7,13 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.3.80] - 2026-03-15
+
+### Fixed
+- **Status-Box wurde nicht angezeigt** — `managing_stock()` Guard entfernt, Fallback auf `get_taken_seats()` wenn WC Stock nicht verfügbar
+- **Debug-Endpoint hinzugefügt** — `/wp-admin/admin-ajax.php?action=as_cai_debug_status` zeigt alle Rohdaten (nur für Admins)
+- CSS-Duplikation bereinigt (`.status-reserved-full` war doppelt)
+
 ## [1.3.79] - 2026-03-15
 
 ### Rebuilt

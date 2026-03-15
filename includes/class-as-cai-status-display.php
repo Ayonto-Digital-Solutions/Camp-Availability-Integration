@@ -40,6 +40,9 @@ class AS_CAI_Status_Display {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'woocommerce_order_status_cancelled', array( $this, 'check_and_notify_on_cancellation' ), 10, 1 );
 		add_action( 'woocommerce_order_status_refunded', array( $this, 'check_and_notify_on_cancellation' ), 10, 1 );
+
+		// Debug endpoint (admin only).
+		add_action( 'wp_ajax_as_cai_debug_status', array( $this, 'ajax_debug_status' ) );
 	}
 
 	/**
@@ -130,27 +133,30 @@ class AS_CAI_Status_Display {
 			return null;
 		}
 
-		// ── Single source of truth: WooCommerce Stock ──
-		if ( ! $product->managing_stock() ) {
-			return null; // Cannot determine availability without stock management.
-		}
-
-		$stock_qty = $product->get_stock_quantity();
-		if ( null === $stock_qty ) {
-			return null;
-		}
-
-		$available  = max( 0, (int) $stock_qty );
+		// ── WooCommerce Stock as primary source ──
+		$available  = 0;
 		$sold_seats = self::count_sold_seats_from_orders( $product_id );
-		$total      = $available + $sold_seats;
 
-		// Count reserved seats (in carts).
-		$reserved = self::count_reserved_seats( $product_id );
+		if ( $product->managing_stock() ) {
+			$stock_qty = $product->get_stock_quantity();
+			$available = ( null !== $stock_qty ) ? max( 0, (int) $stock_qty ) : 0;
+		}
 
-		// Safety: if total is 0, nothing to display.
+		// If WC stock not available, try Stachethemes get_taken_seats as fallback for sold count.
+		if ( 0 === $sold_seats && method_exists( $product, 'get_taken_seats' ) ) {
+			$taken      = $product->get_taken_seats();
+			$sold_seats = is_array( $taken ) ? count( $taken ) : 0;
+		}
+
+		$total = $available + $sold_seats;
+
+		// If we have no data at all, don't display.
 		if ( $total <= 0 ) {
 			return null;
 		}
+
+		// Count reserved seats (in carts).
+		$reserved = self::count_reserved_seats( $product_id );
 
 		// Available for booking = stock minus reserved-in-carts.
 		$bookable     = max( 0, $available - $reserved );
@@ -603,5 +609,56 @@ class AS_CAI_Status_Display {
 				array( '%d' )
 			);
 		}
+	}
+
+	/**
+	 * Debug endpoint — admin only. Shows all raw data for diagnostics.
+	 *
+	 * Usage: /wp-admin/admin-ajax.php?action=as_cai_debug_status&product_id=XXX
+	 */
+	public function ajax_debug_status() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Nicht autorisiert' );
+		}
+
+		$product_id = isset( $_GET['product_id'] ) ? absint( $_GET['product_id'] ) : 0;
+		if ( ! $product_id ) {
+			// Find first auditorium product.
+			$products = wc_get_products( array(
+				'type'   => 'auditorium',
+				'limit'  => 1,
+				'return' => 'ids',
+			) );
+			$product_id = ! empty( $products ) ? $products[0] : 0;
+		}
+
+		if ( ! $product_id ) {
+			wp_send_json_error( 'Kein Auditorium-Produkt gefunden' );
+		}
+
+		$product = wc_get_product( $product_id );
+		$debug   = array(
+			'product_id'      => $product_id,
+			'product_type'    => $product ? $product->get_type() : 'NOT_FOUND',
+			'product_name'    => $product ? $product->get_name() : 'N/A',
+			'managing_stock'  => $product ? $product->managing_stock() : false,
+			'stock_quantity'  => $product ? $product->get_stock_quantity() : null,
+			'stock_status'    => $product ? $product->get_stock_status() : 'N/A',
+			'has_get_taken'   => $product && method_exists( $product, 'get_taken_seats' ),
+			'taken_seats'     => null,
+			'sold_from_orders' => self::count_sold_seats_from_orders( $product_id ),
+			'reserved_seats'  => self::count_reserved_seats( $product_id ),
+			'computed_status' => self::get_detailed_availability_status( $product_id ),
+		);
+
+		if ( $product && method_exists( $product, 'get_taken_seats' ) ) {
+			$taken = $product->get_taken_seats();
+			$debug['taken_seats'] = is_array( $taken ) ? count( $taken ) : $taken;
+		}
+
+		// Check availability window.
+		$debug['availability_check'] = AS_CAI_Availability_Check::get_product_availability( $product_id );
+
+		wp_send_json_success( $debug );
 	}
 }

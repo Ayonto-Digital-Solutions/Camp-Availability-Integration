@@ -235,14 +235,6 @@
 	color: rgba(248, 248, 248, 0.7);
 }
 
-.status-reserved-full {
-	border-left: 3px solid #54595F;
-}
-
-.status-reserved-full .status-title {
-	color: rgba(248, 248, 248, 0.7);
-}
-
 .status-sold-out {
 	border-left: 3px solid #c4433e;
 }

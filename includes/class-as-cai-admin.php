@@ -285,27 +285,28 @@ class AS_CAI_Admin {
 	private function render_header() {
 		?>
 		<div class="as-cai-header as-cai-fade-in">
-			<div style="display: flex; align-items: center; justify-content: space-between;">
-				<div style="display: flex; align-items: center; gap: 20px;">
-					<i class="fas fa-campground" style="font-size: 3rem;"></i>
+			<div class="as-cai-header-inner">
+				<div class="as-cai-header-brand">
+					<img src="<?php echo esc_url( AS_CAI_PLUGIN_URL . 'assets/img/ayonto-icon-white.png' ); ?>"
+					     alt="Ayonto" class="as-cai-header-logo">
 					<div>
-						<h1>Ayonto Camp Availability Integration</h1>
+						<h1>Camp Availability</h1>
 						<p>
 							<?php
 							printf(
 								/* translators: %s: plugin version */
-								esc_html__( 'Version %s – Professionelles Camp-Buchungsmanagement', 'as-camp-availability-integration' ),
+								esc_html__( 'Version %s', 'as-camp-availability-integration' ),
 								esc_html( AS_CAI_VERSION )
 							);
 							?>
 						</p>
 					</div>
 				</div>
-				<div style="text-align: right;">
-					<div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 5px;">
+				<div class="as-cai-header-meta">
+					<div class="as-cai-header-powered">
 						<?php esc_html_e( 'Powered by', 'as-camp-availability-integration' ); ?>
 					</div>
-					<div style="font-size: 1.125rem; font-weight: 600;">ayon.to</div>
+					<div class="as-cai-header-company">ayon.to</div>
 				</div>
 			</div>
 		</div>

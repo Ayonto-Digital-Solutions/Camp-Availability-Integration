@@ -712,9 +712,8 @@ class AS_CAI_Status_Display {
 			border: none;
 			border-radius: 0;
 			box-shadow: none;
-			padding: 16px 0 16px 16px;
+			padding: 0;
 			margin: 0;
-			border-left: 3px solid;
 			display: flex;
 			flex-direction: column;
 			flex: 1;

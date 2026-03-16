@@ -605,7 +605,7 @@ class AS_CAI_Status_Display {
 
 		.as-cai-buybox-left {
 			padding-right: 32px;
-			border-right: 1px solid rgba(177, 158, 99, 0.12);
+			border-right: 1px solid rgba(255, 255, 255, 0.06);
 		}
 
 		/* Linke Spalte */
@@ -678,6 +678,16 @@ class AS_CAI_Status_Display {
 			flex-direction: column;
 			padding-left: 32px;
 		}
+		.as-cai-buybox-right .as-cai-buybox-status {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+		.as-cai-buybox .as-cai-status-box .status-meta {
+			margin-top: auto;
+			padding-top: 16px;
+			border-top: 1px solid rgba(255, 255, 255, 0.06);
+		}
 
 		/* Preis innerhalb Status-Box */
 		.as-cai-status-price {
@@ -705,6 +715,9 @@ class AS_CAI_Status_Display {
 			padding: 16px 0 16px 16px;
 			margin: 0;
 			border-left: 3px solid;
+			display: flex;
+			flex-direction: column;
+			flex: 1;
 		}
 
 		/* Nativer WooCommerce / Stachethemes Add-to-Cart Button */

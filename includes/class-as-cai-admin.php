@@ -238,6 +238,12 @@ class AS_CAI_Admin {
 		register_setting( 'as_cai_general_settings', 'as_cai_countdown_position' );
 		register_setting( 'as_cai_general_settings', 'as_cai_countdown_style' );
 
+		// Shortcode Countdown Settings (v1.3.78).
+		register_setting( 'as_cai_general_settings', 'as_cai_sc_countdown_size' );
+		register_setting( 'as_cai_general_settings', 'as_cai_sc_countdown_show_label' );
+		register_setting( 'as_cai_general_settings', 'as_cai_sc_countdown_show_date' );
+		register_setting( 'as_cai_general_settings', 'as_cai_sc_countdown_show_seconds' );
+
 		// Cart Reservation Settings.
 		register_setting( 'as_cai_cart_settings', 'as_cai_enable_cart_reservation' );
 		register_setting( 'as_cai_cart_settings', 'as_cai_reservation_time' );
@@ -636,6 +642,133 @@ class AS_CAI_Admin {
 				</select>
 			</div>
 		</div>
+
+		<!-- Shortcode Countdown Settings -->
+		<?php
+		$sc_size         = get_option( 'as_cai_sc_countdown_size', 'normal' );
+		$sc_show_label   = get_option( 'as_cai_sc_countdown_show_label', 'yes' );
+		$sc_show_date    = get_option( 'as_cai_sc_countdown_show_date', 'yes' );
+		$sc_show_seconds = get_option( 'as_cai_sc_countdown_show_seconds', 'yes' );
+		?>
+		<div class="as-cai-settings-section" style="margin-top: 32px;">
+			<h3 style="font-size: 1.125rem; font-weight: 600; color: var(--as-gray-900); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+				<i class="fas fa-code" style="color: var(--as-primary);"></i>
+				<?php esc_html_e( 'Shortcode Countdown [as_cai_availability]', 'as-camp-availability-integration' ); ?>
+			</h3>
+			<p style="color: var(--as-gray-500); margin-bottom: 16px; font-size: 13px;">
+				<?php esc_html_e( 'Darstellung des Countdowns im Shop-Loop und Elementor, wenn der Verkauf noch nicht gestartet hat.', 'as-camp-availability-integration' ); ?>
+			</p>
+
+			<!-- Größe -->
+			<div class="as-cai-settings-row">
+				<div class="as-cai-settings-label">
+					<label for="as_cai_sc_countdown_size"><strong><?php esc_html_e( 'Größe', 'as-camp-availability-integration' ); ?></strong></label>
+					<p><?php esc_html_e( 'Darstellungsgröße des Countdowns', 'as-camp-availability-integration' ); ?></p>
+				</div>
+				<select name="as_cai_sc_countdown_size" id="as_cai_sc_countdown_size" class="as-cai-select">
+					<option value="compact" <?php selected( $sc_size, 'compact' ); ?>>
+						<?php esc_html_e( 'Kompakt — nur Timer, eine Zeile', 'as-camp-availability-integration' ); ?>
+					</option>
+					<option value="normal" <?php selected( $sc_size, 'normal' ); ?>>
+						<?php esc_html_e( 'Normal — mit Label und Datum', 'as-camp-availability-integration' ); ?>
+					</option>
+				</select>
+			</div>
+
+			<!-- Label "Verkaufsstart in" -->
+			<div class="as-cai-settings-row">
+				<label class="as-cai-switch">
+					<input type="checkbox" name="as_cai_sc_countdown_show_label" value="yes" <?php checked( $sc_show_label, 'yes' ); ?>>
+					<span class="as-cai-slider"></span>
+				</label>
+				<div class="as-cai-settings-label">
+					<strong><?php esc_html_e( '"Verkaufsstart in" anzeigen', 'as-camp-availability-integration' ); ?></strong>
+					<p><?php esc_html_e( 'Zeigt den Text "Verkaufsstart in" vor dem Timer', 'as-camp-availability-integration' ); ?></p>
+				</div>
+			</div>
+
+			<!-- Datum anzeigen -->
+			<div class="as-cai-settings-row">
+				<label class="as-cai-switch">
+					<input type="checkbox" name="as_cai_sc_countdown_show_date" value="yes" <?php checked( $sc_show_date, 'yes' ); ?>>
+					<span class="as-cai-slider"></span>
+				</label>
+				<div class="as-cai-settings-label">
+					<strong><?php esc_html_e( 'Startdatum anzeigen', 'as-camp-availability-integration' ); ?></strong>
+					<p><?php esc_html_e( 'Zeigt das Datum und die Uhrzeit des Verkaufsstarts', 'as-camp-availability-integration' ); ?></p>
+				</div>
+			</div>
+
+			<!-- Sekunden anzeigen -->
+			<div class="as-cai-settings-row">
+				<label class="as-cai-switch">
+					<input type="checkbox" name="as_cai_sc_countdown_show_seconds" value="yes" <?php checked( $sc_show_seconds, 'yes' ); ?>>
+					<span class="as-cai-slider"></span>
+				</label>
+				<div class="as-cai-settings-label">
+					<strong><?php esc_html_e( 'Sekunden anzeigen', 'as-camp-availability-integration' ); ?></strong>
+					<p><?php esc_html_e( 'Zeigt die Sekunden im Countdown an', 'as-camp-availability-integration' ); ?></p>
+				</div>
+			</div>
+
+			<!-- Live-Vorschau -->
+			<div style="margin-top: 16px; padding: 16px; background: #1e293b; border-radius: 8px;">
+				<p style="color: #94a3b8; font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;"><?php esc_html_e( 'Vorschau', 'as-camp-availability-integration' ); ?></p>
+				<div id="sc-countdown-preview" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; line-height: 1.4; white-space: nowrap; background: linear-gradient(135deg, #1e293b, #334155); color: #f8fafc; border: 1px solid #475569;">
+					<span class="prev-icon" style="font-size: 14px;">⏳</span>
+					<span class="prev-label" style="color: #94a3b8; font-weight: 500; font-size: 12px;">Verkaufsstart in</span>
+					<span style="font-variant-numeric: tabular-nums; letter-spacing: 0.5px; color: #B19E63; font-weight: 700;">
+						16T 09S 36M
+						<span class="prev-seconds">50S</span>
+					</span>
+					<span class="prev-date" style="color: #64748b; font-size: 11px; font-weight: 400;">01.04.2026 um 20:00 Uhr</span>
+				</div>
+			</div>
+		</div>
+
+		<script>
+		(function() {
+			var sizeEl = document.getElementById('as_cai_sc_countdown_size');
+			var labelCb = document.querySelector('[name="as_cai_sc_countdown_show_label"]');
+			var dateCb = document.querySelector('[name="as_cai_sc_countdown_show_date"]');
+			var secCb = document.querySelector('[name="as_cai_sc_countdown_show_seconds"]');
+			var preview = document.getElementById('sc-countdown-preview');
+			if (!preview) return;
+
+			function updatePreview() {
+				var isCompact = sizeEl && sizeEl.value === 'compact';
+				var showLabel = labelCb && labelCb.checked;
+				var showDate = dateCb && dateCb.checked;
+				var showSec = secCb && secCb.checked;
+
+				var iconEl = preview.querySelector('.prev-icon');
+				var labelEl = preview.querySelector('.prev-label');
+				var dateEl = preview.querySelector('.prev-date');
+				var secEl = preview.querySelector('.prev-seconds');
+
+				if (isCompact) {
+					if (iconEl) iconEl.style.display = 'none';
+					if (labelEl) labelEl.style.display = 'none';
+					if (dateEl) dateEl.style.display = 'none';
+					preview.style.padding = '3px 8px';
+					preview.style.fontSize = '12px';
+				} else {
+					if (iconEl) iconEl.style.display = showLabel ? '' : 'none';
+					if (labelEl) labelEl.style.display = showLabel ? '' : 'none';
+					if (dateEl) dateEl.style.display = showDate ? '' : 'none';
+					preview.style.padding = '5px 12px';
+					preview.style.fontSize = '13px';
+				}
+				if (secEl) secEl.style.display = showSec ? '' : 'none';
+			}
+
+			if (sizeEl) sizeEl.addEventListener('change', updatePreview);
+			if (labelCb) labelCb.addEventListener('change', updatePreview);
+			if (dateCb) dateCb.addEventListener('change', updatePreview);
+			if (secCb) secCb.addEventListener('change', updatePreview);
+			updatePreview();
+		})();
+		</script>
 		<?php
 	}
 

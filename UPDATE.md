@@ -1,56 +1,73 @@
-# UPDATE v1.3.72 - Admin UI Modernisierung 2026
+# UPDATE v1.3.79 - Admin-Seite Restructuring + Verfügbarkeits-Dashboard
 
-**Release-Datum:** 2026-03-15
-**Update-Typ:** MINOR (UI Modernisierung)
+**Release-Datum:** 2026-03-16
+**Update-Typ:** FEATURE (Admin Restructuring)
 **Priority:** 🟢 **EMPFOHLEN**
 
 ---
 
 ## 📋 ZUSAMMENFASSUNG
 
-v1.3.71 bringt das Admin-Panel auf die **Ayonto Brand Identity 2026**. Komplett überarbeitetes Farbschema, Ayonto-Logo im Header und modernes, flaches Design.
+v1.3.79 strukturiert die Admin-Seite komplett um und fügt ein neues **Verfügbarkeits-Dashboard** hinzu, das die Verfügbarkeit aller Produkte gruppiert nach Event (Produktkategorie) anzeigt.
 
 **Breaking Changes:** Keine
-**Empfehlung:** Empfohlen für einheitliches Branding
+**Empfehlung:** Sofort installieren
 
 ---
 
-## 🎨 DESIGN UPDATE
+## 🏗️ ADMIN RESTRUCTURING
 
-### Neues Farbschema
-- **Primärfarbe:** `#0583F2` (Ayonto-Blau) statt `#667eea`/`#764ba2` (lila Gradient)
-- **Header:** `#1A1A1A` (Eerie Black) mit blauem Akzentstrich
-- **Tabellenheader:** Dunkler Hintergrund für bessere Lesbarkeit
+### Neues Menü (logisch gruppiert)
+1. **Dashboard** — Übersicht + Verfügbarkeit je Event
+2. **Reservierungen** — Warenkorb-Reservierungen
+3. **Reservierung anlegen** — Manuelle Reservierung
+4. **Shortcode Builder** — Shortcode-Generator
+5. **Einstellungen** — Countdown, Warenkorb, Updates
+6. **Entwickler** — Debug, Debug-Tools, Tests (zusammengelegt)
+7. **Dokumentation** — README, Changelog, Hilfe
 
-### Header
-- Ayonto-Logo (`ayonto-icon-white.png`) statt Font Awesome Campground-Icon
-- Kompakterer, modernerer Aufbau
+### Header-Tabs
+- Alle 7 Seiten als Tabs sichtbar (vorher fehlten "Reservierung anlegen" und "Shortcode Builder")
 
-### UI-Modernisierung
-- Flache Farben statt schwerer Gradienten
-- Tabs: Solid Blue Active-State
-- Buttons: Flat Primary-Color
-- Dezentere Schatten und subtilere Borders
-- Kompaktere Abstände
+### Einstellungen bereinigt
+- Nur noch 3 Tabs: Countdown, Warenkorb, Updates
+- Debug und Debug-Tools nach "Entwickler" verschoben
+
+---
+
+## 📊 VERFÜGBARKEITS-DASHBOARD
+
+### Neue Sektion auf dem Dashboard
+- Gruppiert nach **Event** (= Produktkategorie, z.B. "Sommercamp 2026")
+- Zeigt je Produkt: Name (verlinkt), Mini-Progressbar, x/y Verfügbarkeit, Status-Badge
+- Summenzeile pro Event mit Prozent-Badge
+- **Vergangene Events** werden automatisch ausgeblendet
+
+### Status-Labels (Betreibersicht)
+| Status | Label | Farbe |
+|--------|-------|-------|
+| available | Verfügbar | Grün |
+| limited | Gut gebucht | Orange |
+| critical | Fast ausgebucht | Grün |
+| reserved_full | Voll reserviert | Grau |
+| sold_out | Ausgebucht | Grün |
 
 ### Geänderte Dateien
-- `assets/css/as-cai-admin.css` — Komplett überarbeitet
-- `includes/class-as-cai-admin.php` — Header mit Logo
-- `assets/img/ayonto-icon-white.png` — Neu hinzugefügt
-- `assets/img/ayonto-icon.png` — Neu hinzugefügt
-- `assets/img/ayonto-logo.png` — Neu hinzugefügt
+- `includes/class-as-cai-admin.php` — Menü, Tabs, Dashboard, Entwickler-Tab
+- `as-camp-availability-integration.php` — Version 1.3.79
 
 ---
 
-## 📦 VORHERIGE UPDATES (v1.3.59–v1.3.70)
+## 📦 VORHERIGE UPDATES (v1.3.59–v1.3.78)
 
 | Version | Datum | Beschreibung |
 |---------|-------|--------------|
+| v1.3.78 | 2026-03-16 | BuyBox mit nativer WC Add-to-Cart, kontextabh. Labels, Stach Gold-Farben |
+| v1.3.77 | 2026-03-15 | Status-Display Dual-Source Datenarchitektur |
+| v1.3.72 | 2026-03-15 | Admin UI Modernisierung (Ayonto Brand) |
 | v1.3.70 | 2026-03-15 | Test-Suite komplett überarbeitet |
-| v1.3.69 | 2026-03-15 | Veraltete Admin-Notice entfernt, check-version.sh erweitert |
 | v1.3.68 | 2026-03-14 | PDF-Druck komplett überarbeitet (Landscape) |
 | v1.3.67 | 2026-03-14 | In-App Updater komplett neu geschrieben |
-| v1.3.66 | 2026-03-14 | Sortierbare Spalten, PDF-Fix, Version-Check Script |
 | v1.3.65 | 2026-03-13 | Code Review Fixes, Settings auf Deutsch |
 | v1.3.64 | 2026-03-13 | Live GitHub Update-Check mit Version-Switcher |
 | v1.3.63 | 2026-03-13 | Server-side Availability Gate |

@@ -7,6 +7,25 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.3.79] - 2026-03-16
+
+### Changed
+- **Admin-Seite komplett umstrukturiert**
+  - Menü logisch neu geordnet: Dashboard → Reservierungen → Reservierung anlegen → Shortcode Builder → Einstellungen → Entwickler → Dokumentation
+  - Alle 7 Seiten als Header-Tabs sichtbar (vorher fehlten "Reservierung anlegen" und "Shortcode Builder")
+  - Neuer "Entwickler"-Tab: Debug, Debug-Tools und Tests zusammengelegt
+  - Einstellungen bereinigt: nur noch Countdown, Warenkorb, Updates
+
+### Added
+- **Dashboard: Verfügbarkeits-Übersicht nach Event**
+  - Neue Sektion "Verfügbarkeit" gruppiert nach Event (= Produktkategorie)
+  - Zeigt je Produkt: Name, Mini-Progressbar, x/y Verfügbarkeit, Status-Badge
+  - Summenzeile pro Event-Gruppe mit Prozent-Badge
+  - Vergangene Events werden automatisch ausgeblendet (Koala End-Date / WC Sale-End-Date)
+  - Status-Labels aus Betreibersicht: "Fast ausgebucht", "Gut gebucht" statt "Kritisch"/"Begrenzt"
+
+---
+
 ## [1.3.78] - 2026-03-16
 
 ### Added

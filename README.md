@@ -1,6 +1,6 @@
 # Camp Availability Integration
 
-**Version:** 1.3.78  
+**Version:** 1.3.79
 **Author:** Marc Mirschel  
 **Author URI:** https://marc.mirschel.biz  
 **Plugin URI:** https://ayon.to

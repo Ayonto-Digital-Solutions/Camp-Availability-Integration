@@ -33,14 +33,25 @@
 			self.showNotifyPrompt(productId);
 		});
 
-		// CTA-Button: Scroll to seat map (auditorium) or add-to-cart (simple).
+		// CTA-Button: Open Seat Planner modal (auditorium) or add-to-cart (simple).
 		$(document).on('click', '.as-cai-cta-button', function (e) {
 			e.preventDefault();
 			var type = $(this).data('product-type');
 			if (type === 'auditorium') {
-				var $seatMap = $('.stachesepl-seat-planner-wrap, .stachesepl-add-to-cart-button-root');
-				if ($seatMap.length) {
-					$('html, body').animate({ scrollTop: $seatMap.first().offset().top - 80 }, 600);
+				// Find the Stachethemes Seat Planner button root (React component).
+				var $seatRoot = $('.stachesepl-add-to-cart-button-root');
+				if ($seatRoot.length) {
+					// Use native click (not jQuery trigger) — React uses synthetic events
+					// and won't respond to jQuery .trigger('click').
+					var clickTarget = $seatRoot.find('.stachesepl-select-seat-placeholder, button, [role="button"], .stachesepl-date-time-input-placeholder')[0];
+					if (!clickTarget) {
+						clickTarget = $seatRoot[0];
+					}
+					if (clickTarget) {
+						clickTarget.click();
+					}
+					// Scroll into view so user sees the modal context.
+					$('html, body').animate({ scrollTop: $seatRoot.first().offset().top - 80 }, 600);
 				}
 			} else {
 				var $form = $('form.cart');

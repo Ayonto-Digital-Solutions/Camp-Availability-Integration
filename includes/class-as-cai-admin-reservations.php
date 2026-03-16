@@ -175,6 +175,7 @@ class AS_CAI_Admin_Reservations {
 			// Mark as taken in Stachethemes.
 			if ( method_exists( $product, 'add_meta_taken_seat' ) ) {
 				$product->add_meta_taken_seat( $seat_id );
+				$product->save_meta_data();
 			}
 
 			// Save to our DB.
@@ -239,6 +240,7 @@ class AS_CAI_Admin_Reservations {
 		$product = wc_get_product( $reservation->product_id );
 		if ( $product && method_exists( $product, 'delete_meta_taken_seat' ) ) {
 			$product->delete_meta_taken_seat( $reservation->seat_id );
+			$product->save_meta_data();
 		}
 
 		// Update our DB.

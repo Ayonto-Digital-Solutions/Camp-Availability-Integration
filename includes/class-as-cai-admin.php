@@ -69,7 +69,7 @@ class AS_CAI_Admin {
 			56
 		);
 
-		// Dashboard submenu.
+		// 1. Dashboard.
 		add_submenu_page(
 			'bg-camp-availability',
 			__( 'Dashboard', 'as-camp-availability-integration' ),
@@ -79,27 +79,17 @@ class AS_CAI_Admin {
 			array( $this, 'render_admin_page' )
 		);
 
-		// Cart Reservations submenu.
+		// 2. Reservierungen (Warenkorb).
 		add_submenu_page(
 			'bg-camp-availability',
-			__( 'Warenkorb-Reservierungen', 'as-camp-availability-integration' ),
-			__( 'Warenkorb-Reservierungen', 'as-camp-availability-integration' ),
+			__( 'Reservierungen', 'as-camp-availability-integration' ),
+			__( 'Reservierungen', 'as-camp-availability-integration' ),
 			'manage_woocommerce',
 			'bg-camp-availability-reservations',
 			array( $this, 'render_admin_page' )
 		);
 
-		// Settings submenu.
-		add_submenu_page(
-			'bg-camp-availability',
-			__( 'Settings', 'as-camp-availability-integration' ),
-			__( 'Settings', 'as-camp-availability-integration' ),
-			'manage_woocommerce',
-			'bg-camp-availability-settings',
-			array( $this, 'render_admin_page' )
-		);
-
-		// Admin Reservations (v1.3.78).
+		// 3. Reservierung anlegen.
 		add_submenu_page(
 			'bg-camp-availability',
 			__( 'Reservierung anlegen', 'as-camp-availability-integration' ),
@@ -109,7 +99,7 @@ class AS_CAI_Admin {
 			array( $this, 'render_admin_page' )
 		);
 
-		// Shortcode Builder (v1.3.78).
+		// 4. Shortcode Builder.
 		add_submenu_page(
 			'bg-camp-availability',
 			__( 'Shortcode Builder', 'as-camp-availability-integration' ),
@@ -119,21 +109,31 @@ class AS_CAI_Admin {
 			array( $this, 'render_admin_page' )
 		);
 
-		// Test Suite submenu (v1.3.14).
+		// 5. Einstellungen.
 		add_submenu_page(
 			'bg-camp-availability',
-			__( 'Tests', 'as-camp-availability-integration' ),
-			__( 'Tests', 'as-camp-availability-integration' ),
+			__( 'Einstellungen', 'as-camp-availability-integration' ),
+			__( 'Einstellungen', 'as-camp-availability-integration' ),
 			'manage_woocommerce',
-			'bg-camp-availability-tests',
+			'bg-camp-availability-settings',
 			array( $this, 'render_admin_page' )
 		);
 
-		// Documentation submenu.
+		// 6. Entwickler (Debug + Tests).
 		add_submenu_page(
 			'bg-camp-availability',
-			__( 'Documentation', 'as-camp-availability-integration' ),
-			__( 'Documentation', 'as-camp-availability-integration' ),
+			__( 'Entwickler', 'as-camp-availability-integration' ),
+			__( 'Entwickler', 'as-camp-availability-integration' ),
+			'manage_woocommerce',
+			'bg-camp-availability-developer',
+			array( $this, 'render_admin_page' )
+		);
+
+		// 7. Dokumentation.
+		add_submenu_page(
+			'bg-camp-availability',
+			__( 'Dokumentation', 'as-camp-availability-integration' ),
+			__( 'Dokumentation', 'as-camp-availability-integration' ),
 			'manage_woocommerce',
 			'bg-camp-availability-docs',
 			array( $this, 'render_admin_page' )
@@ -279,11 +279,11 @@ class AS_CAI_Admin {
 		// Determine which tab to show.
 		$tab_map = array(
 			'bg-camp-availability'                     => 'dashboard',
-			'bg-camp-availability-settings'            => 'settings',
 			'bg-camp-availability-reservations'        => 'reservations',
 			'bg-camp-availability-admin-reservations'  => 'admin_reservations',
 			'bg-camp-availability-shortcode-builder'   => 'shortcode_builder',
-			'bg-camp-availability-tests'               => 'tests',
+			'bg-camp-availability-settings'            => 'settings',
+			'bg-camp-availability-developer'           => 'developer',
 			'bg-camp-availability-docs'                => 'docs',
 		);
 
@@ -299,9 +299,6 @@ class AS_CAI_Admin {
 					case 'dashboard':
 						$this->render_dashboard();
 						break;
-					case 'settings':
-						$this->render_settings();
-						break;
 					case 'reservations':
 						$this->render_reservations();
 						break;
@@ -311,8 +308,11 @@ class AS_CAI_Admin {
 					case 'shortcode_builder':
 						$this->render_shortcode_builder();
 						break;
-					case 'tests':
-						AS_CAI_Test_Suite::instance()->render_page();
+					case 'settings':
+						$this->render_settings();
+						break;
+					case 'developer':
+						$this->render_developer();
 						break;
 					case 'docs':
 						$this->render_documentation();
@@ -358,27 +358,37 @@ class AS_CAI_Admin {
 
 		<!-- Tab Navigation -->
 		<div class="as-cai-tabs as-cai-fade-in">
-			<button class="as-cai-tab <?php echo esc_attr( 'dashboard' === $this->active_tab ? 'active' : '' ); ?>" 
+			<button class="as-cai-tab <?php echo esc_attr( 'dashboard' === $this->active_tab ? 'active' : '' ); ?>"
 			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability' ) ); ?>'">
 				<i class="fas fa-chart-line"></i>
 				<?php esc_html_e( 'Dashboard', 'as-camp-availability-integration' ); ?>
 			</button>
-			<button class="as-cai-tab <?php echo esc_attr( 'reservations' === $this->active_tab ? 'active' : '' ); ?>" 
+			<button class="as-cai-tab <?php echo esc_attr( 'reservations' === $this->active_tab ? 'active' : '' ); ?>"
 			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-reservations' ) ); ?>'">
 				<i class="fas fa-list"></i>
 				<?php esc_html_e( 'Reservierungen', 'as-camp-availability-integration' ); ?>
 			</button>
-			<button class="as-cai-tab <?php echo esc_attr( 'settings' === $this->active_tab ? 'active' : '' ); ?>" 
+			<button class="as-cai-tab <?php echo esc_attr( 'admin_reservations' === $this->active_tab ? 'active' : '' ); ?>"
+			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-admin-reservations' ) ); ?>'">
+				<i class="fas fa-plus-circle"></i>
+				<?php esc_html_e( 'Reservierung anlegen', 'as-camp-availability-integration' ); ?>
+			</button>
+			<button class="as-cai-tab <?php echo esc_attr( 'shortcode_builder' === $this->active_tab ? 'active' : '' ); ?>"
+			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-shortcode-builder' ) ); ?>'">
+				<i class="fas fa-code"></i>
+				<?php esc_html_e( 'Shortcode Builder', 'as-camp-availability-integration' ); ?>
+			</button>
+			<button class="as-cai-tab <?php echo esc_attr( 'settings' === $this->active_tab ? 'active' : '' ); ?>"
 			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-settings' ) ); ?>'">
 				<i class="fas fa-cog"></i>
 				<?php esc_html_e( 'Einstellungen', 'as-camp-availability-integration' ); ?>
 			</button>
-			<button class="as-cai-tab <?php echo esc_attr( 'tests' === $this->active_tab ? 'active' : '' ); ?>" 
-			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-tests' ) ); ?>'">
-				<i class="fas fa-vial"></i>
-				<?php esc_html_e( 'Tests', 'as-camp-availability-integration' ); ?>
+			<button class="as-cai-tab <?php echo esc_attr( 'developer' === $this->active_tab ? 'active' : '' ); ?>"
+			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-developer' ) ); ?>'">
+				<i class="fas fa-terminal"></i>
+				<?php esc_html_e( 'Entwickler', 'as-camp-availability-integration' ); ?>
 			</button>
-			<button class="as-cai-tab <?php echo esc_attr( 'docs' === $this->active_tab ? 'active' : '' ); ?>" 
+			<button class="as-cai-tab <?php echo esc_attr( 'docs' === $this->active_tab ? 'active' : '' ); ?>"
 			        onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-docs' ) ); ?>'">
 				<i class="fas fa-book"></i>
 				<?php esc_html_e( 'Dokumentation', 'as-camp-availability-integration' ); ?>
@@ -451,31 +461,249 @@ class AS_CAI_Admin {
 
 		<!-- Quick Actions Bar -->
 		<div class="as-cai-quick-actions as-cai-fade-in">
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-settings' ) ); ?>" 
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-reservations' ) ); ?>"
 			   class="as-cai-btn as-cai-btn-primary">
-				<i class="fas fa-cog"></i>
-				<?php esc_html_e( 'Einstellungen', 'as-camp-availability-integration' ); ?>
-			</a>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-reservations' ) ); ?>" 
-			   class="as-cai-btn as-cai-btn-success">
 				<i class="fas fa-list"></i>
 				<?php esc_html_e( 'Reservierungen anzeigen', 'as-camp-availability-integration' ); ?>
+			</a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-admin-reservations' ) ); ?>"
+			   class="as-cai-btn as-cai-btn-success">
+				<i class="fas fa-plus-circle"></i>
+				<?php esc_html_e( 'Reservierung anlegen', 'as-camp-availability-integration' ); ?>
+			</a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-settings' ) ); ?>"
+			   class="as-cai-btn as-cai-btn-secondary">
+				<i class="fas fa-cog"></i>
+				<?php esc_html_e( 'Einstellungen', 'as-camp-availability-integration' ); ?>
 			</a>
 			<button @click="clearAllReservations()" class="as-cai-btn as-cai-btn-danger">
 				<i class="fas fa-trash"></i>
 				<?php esc_html_e( 'Alle Reservierungen löschen', 'as-camp-availability-integration' ); ?>
 			</button>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=bg-camp-availability-settings' ) ); ?>" 
-			   class="as-cai-btn as-cai-btn-secondary">
-				<i class="fas fa-cog"></i>
-				<?php esc_html_e( 'Einstellungen & Tools', 'as-camp-availability-integration' ); ?>
-			</a>
 		</div>
 
-		<!-- Removed: Reservation Statistics chart and Recent Activity cards.
-		     These previously showed hardcoded placeholder data.
-		     Real-time stats are shown in the stat cards above. -->
+		<!-- Verfügbarkeit nach Event -->
+		<?php $this->render_availability_overview(); ?>
 		<?php
+	}
+
+	/**
+	 * Render availability overview grouped by event (product category).
+	 *
+	 * @since 1.3.79
+	 */
+	private function render_availability_overview() {
+		$availability_data = $this->get_availability_by_category();
+
+		if ( empty( $availability_data ) ) {
+			return;
+		}
+		?>
+		<div class="as-cai-card as-cai-fade-in" style="margin-top: 24px;">
+			<div class="as-cai-card-header">
+				<h2 class="as-cai-card-title">
+					<i class="fas fa-calendar-check"></i>
+					<?php esc_html_e( 'Verfügbarkeit', 'as-camp-availability-integration' ); ?>
+				</h2>
+			</div>
+			<div class="as-cai-card-body" style="padding: 0;">
+				<?php foreach ( $availability_data as $category_name => $cat_data ) :
+					$cat_total     = $cat_data['total'];
+					$cat_available = $cat_data['available'];
+					$cat_percent   = $cat_total > 0 ? round( ( $cat_available / $cat_total ) * 100 ) : 0;
+					$cat_color     = $cat_percent > 50 ? 'var(--as-success, #10b981)' : ( $cat_percent > 20 ? 'var(--as-warning, #f59e0b)' : 'var(--as-danger, #ef4444)' );
+				?>
+					<div style="border-bottom: 1px solid var(--as-gray-200, #e5e7eb);">
+						<!-- Category Header -->
+						<div style="padding: 16px 24px; background: var(--as-gray-50, #f9fafb); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+							<div style="display: flex; align-items: center; gap: 10px;">
+								<i class="fas fa-calendar" style="color: var(--as-primary, #6366f1);"></i>
+								<strong style="font-size: 15px; color: var(--as-gray-900, #111827);"><?php echo esc_html( $category_name ); ?></strong>
+							</div>
+							<div style="display: flex; align-items: center; gap: 12px;">
+								<span style="font-size: 13px; color: var(--as-gray-600, #4b5563);">
+									<?php echo esc_html( $cat_available ); ?> / <?php echo esc_html( $cat_total ); ?> <?php esc_html_e( 'verfügbar', 'as-camp-availability-integration' ); ?>
+								</span>
+								<span style="display: inline-flex; align-items: center; justify-content: center; min-width: 48px; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; color: white; background: <?php echo esc_attr( $cat_color ); ?>;">
+									<?php echo esc_html( $cat_percent ); ?>%
+								</span>
+							</div>
+						</div>
+
+						<!-- Products Table -->
+						<div style="padding: 0 24px 16px;">
+							<table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+								<?php foreach ( $cat_data['products'] as $prod ) :
+									$prod_percent = $prod['total'] > 0 ? round( ( $prod['available'] / $prod['total'] ) * 100 ) : 0;
+									$bar_color    = $prod_percent > 50 ? '#10b981' : ( $prod_percent > 20 ? '#f59e0b' : '#ef4444' );
+									$status_text  = $prod['status'];
+									$status_badge_colors = array(
+										'available'     => 'background: rgba(16,185,129,0.1); color: #059669;',
+										'limited'       => 'background: rgba(245,158,11,0.1); color: #d97706;',
+										'critical'      => 'background: rgba(239,68,68,0.1); color: #dc2626;',
+										'reserved_full' => 'background: rgba(107,114,128,0.1); color: #4b5563;',
+										'sold_out'      => 'background: rgba(239,68,68,0.15); color: #b91c1c;',
+									);
+									$badge_style = isset( $status_badge_colors[ $status_text ] ) ? $status_badge_colors[ $status_text ] : 'background: rgba(107,114,128,0.1); color: #4b5563;';
+									$status_labels = array(
+										'available'     => 'Verfügbar',
+										'limited'       => 'Begrenzt',
+										'critical'      => 'Kritisch',
+										'reserved_full' => 'Reserviert',
+										'sold_out'      => 'Ausgebucht',
+									);
+									$status_label = isset( $status_labels[ $status_text ] ) ? $status_labels[ $status_text ] : $status_text;
+								?>
+								<tr style="border-bottom: 1px solid var(--as-gray-100, #f3f4f6);">
+									<td style="padding: 10px 0; width: 30%;">
+										<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $prod['id'] . '&action=edit' ) ); ?>"
+										   style="color: var(--as-primary, #6366f1); font-weight: 600; text-decoration: none;">
+											<?php echo esc_html( $prod['name'] ); ?>
+										</a>
+									</td>
+									<td style="padding: 10px 8px; width: 35%;">
+										<div style="display: flex; align-items: center; gap: 8px;">
+											<div style="flex: 1; height: 8px; background: var(--as-gray-200, #e5e7eb); border-radius: 4px; overflow: hidden;">
+												<div style="height: 100%; width: <?php echo esc_attr( $prod_percent ); ?>%; background: <?php echo esc_attr( $bar_color ); ?>; border-radius: 4px; transition: width 0.3s;"></div>
+											</div>
+											<span style="font-size: 12px; font-weight: 600; color: var(--as-gray-600, #4b5563); min-width: 36px; text-align: right;"><?php echo esc_html( $prod_percent ); ?>%</span>
+										</div>
+									</td>
+									<td style="padding: 10px 8px; width: 20%; text-align: center; font-size: 13px; color: var(--as-gray-700, #374151);">
+										<strong><?php echo esc_html( $prod['available'] ); ?></strong> / <?php echo esc_html( $prod['total'] ); ?>
+									</td>
+									<td style="padding: 10px 0; width: 15%; text-align: right;">
+										<span style="display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; <?php echo esc_attr( $badge_style ); ?>">
+											<?php echo esc_html( $status_label ); ?>
+										</span>
+									</td>
+								</tr>
+								<?php endforeach; ?>
+							</table>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Get availability data grouped by product category (event).
+	 * Filters out past events.
+	 *
+	 * @since 1.3.79
+	 * @return array Keyed by category name, each with 'total', 'available', 'products' array.
+	 */
+	private function get_availability_by_category() {
+		if ( ! class_exists( 'AS_CAI_Status_Display' ) ) {
+			return array();
+		}
+
+		// Load all auditorium products.
+		$auditorium_products = wc_get_products( array(
+			'type'   => 'auditorium',
+			'limit'  => 100,
+			'status' => 'publish',
+		) );
+
+		// Load all simple products with stock management.
+		$simple_products = array_filter(
+			wc_get_products( array(
+				'type'   => 'simple',
+				'limit'  => 100,
+				'status' => 'publish',
+			) ),
+			function( $p ) {
+				return $p->managing_stock();
+			}
+		);
+
+		$all_products = array_merge(
+			is_array( $auditorium_products ) ? $auditorium_products : array(),
+			is_array( $simple_products ) ? $simple_products : array()
+		);
+
+		if ( empty( $all_products ) ) {
+			return array();
+		}
+
+		$today = date( 'Y-m-d' );
+		$grouped = array();
+
+		foreach ( $all_products as $product ) {
+			$product_id = $product->get_id();
+
+			// Filter past events.
+			if ( $this->is_past_event( $product_id, $today ) ) {
+				continue;
+			}
+
+			// Get availability status.
+			$status_data = AS_CAI_Status_Display::get_detailed_availability_status( $product_id );
+			if ( ! $status_data ) {
+				continue;
+			}
+
+			// Get product categories.
+			$categories = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'all' ) );
+			if ( is_wp_error( $categories ) || empty( $categories ) ) {
+				$category_name = __( 'Ohne Kategorie', 'as-camp-availability-integration' );
+			} else {
+				$category_name = $categories[0]->name;
+			}
+
+			if ( ! isset( $grouped[ $category_name ] ) ) {
+				$grouped[ $category_name ] = array(
+					'total'     => 0,
+					'available' => 0,
+					'products'  => array(),
+				);
+			}
+
+			$grouped[ $category_name ]['total']     += $status_data['total'];
+			$grouped[ $category_name ]['available'] += $status_data['available'];
+			$grouped[ $category_name ]['products'][] = array(
+				'id'        => $product_id,
+				'name'      => $product->get_name(),
+				'total'     => $status_data['total'],
+				'available' => $status_data['available'],
+				'sold'      => $status_data['sold'],
+				'reserved'  => $status_data['reserved'],
+				'status'    => $status_data['status'],
+			);
+		}
+
+		// Sort categories alphabetically.
+		ksort( $grouped );
+
+		return $grouped;
+	}
+
+	/**
+	 * Check if a product's event has passed.
+	 *
+	 * @param int    $product_id Product ID.
+	 * @param string $today      Today's date (Y-m-d).
+	 * @return bool
+	 */
+	private function is_past_event( $product_id, $today ) {
+		// Check Koala Availability Scheduler end date.
+		$end_date = get_post_meta( $product_id, 'af_aps_end_date_prod_lvl', true );
+		if ( ! empty( $end_date ) && $end_date < $today ) {
+			return true;
+		}
+
+		// Check WooCommerce sale end date.
+		$product = wc_get_product( $product_id );
+		if ( $product ) {
+			$sale_to = $product->get_date_on_sale_to();
+			if ( $sale_to && $sale_to->date( 'Y-m-d' ) < $today ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -513,18 +741,6 @@ class AS_CAI_Admin {
 							<i class="fas fa-sync-alt"></i>
 							<?php esc_html_e( 'Updates', 'as-camp-availability-integration' ); ?>
 						</button>
-						<button type="button" @click="activeTab = 'debug'"
-						        :class="activeTab === 'debug' ? 'as-cai-settings-tab-active' : 'as-cai-settings-tab'"
-						        style="flex: 1; padding: 16px 20px; border: none; background: transparent; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; border-bottom: 3px solid transparent;">
-							<i class="fas fa-bug"></i>
-							<?php esc_html_e( 'Debug', 'as-camp-availability-integration' ); ?>
-						</button>
-						<button type="button" @click="activeTab = 'debug_tools'"
-						        :class="activeTab === 'debug_tools' ? 'as-cai-settings-tab-active' : 'as-cai-settings-tab'"
-						        style="flex: 1; padding: 16px 20px; border: none; background: transparent; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; border-bottom: 3px solid transparent;">
-							<i class="fas fa-tools"></i>
-							<?php esc_html_e( 'Debug-Tools', 'as-camp-availability-integration' ); ?>
-						</button>
 					</nav>
 				</div>
 
@@ -550,8 +766,57 @@ class AS_CAI_Admin {
 					</div>
 				</form>
 
+				<!-- Updates Tab (No form - AJAX based) -->
+				<div x-show="activeTab === 'updates'" x-cloak style="padding: 24px;">
+					<?php $this->render_updates_tab(); ?>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render Developer tab (Debug + Debug-Tools + Tests).
+	 *
+	 * @since 1.3.79
+	 */
+	private function render_developer() {
+		?>
+		<div class="as-cai-card as-cai-fade-in" x-data="{ activeTab: 'debug' }">
+			<div class="as-cai-card-header">
+				<h2 class="as-cai-card-title">
+					<i class="fas fa-terminal"></i>
+					<?php esc_html_e( 'Entwickler', 'as-camp-availability-integration' ); ?>
+				</h2>
+			</div>
+
+			<!-- Tab Navigation -->
+			<div class="as-cai-card-body" style="padding: 0;">
+				<div style="border-bottom: 2px solid var(--as-gray-200); background: var(--as-gray-50);">
+					<nav style="display: flex; gap: 0; padding: 0 24px;">
+						<button type="button" @click="activeTab = 'debug'"
+						        :class="activeTab === 'debug' ? 'as-cai-settings-tab-active' : 'as-cai-settings-tab'"
+						        style="flex: 1; padding: 16px 20px; border: none; background: transparent; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; border-bottom: 3px solid transparent;">
+							<i class="fas fa-bug"></i>
+							<?php esc_html_e( 'Debug', 'as-camp-availability-integration' ); ?>
+						</button>
+						<button type="button" @click="activeTab = 'debug_tools'"
+						        :class="activeTab === 'debug_tools' ? 'as-cai-settings-tab-active' : 'as-cai-settings-tab'"
+						        style="flex: 1; padding: 16px 20px; border: none; background: transparent; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; border-bottom: 3px solid transparent;">
+							<i class="fas fa-tools"></i>
+							<?php esc_html_e( 'Debug-Tools', 'as-camp-availability-integration' ); ?>
+						</button>
+						<button type="button" @click="activeTab = 'tests'"
+						        :class="activeTab === 'tests' ? 'as-cai-settings-tab-active' : 'as-cai-settings-tab'"
+						        style="flex: 1; padding: 16px 20px; border: none; background: transparent; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; border-bottom: 3px solid transparent;">
+							<i class="fas fa-vial"></i>
+							<?php esc_html_e( 'Tests', 'as-camp-availability-integration' ); ?>
+						</button>
+					</nav>
+				</div>
+
 				<!-- Debug Settings Tab (combined basic + advanced) -->
-				<form method="post" action="options.php" x-show="activeTab === 'debug'" x-cloak>
+				<form method="post" action="options.php" x-show="activeTab === 'debug'">
 					<div style="padding: 24px;">
 						<?php settings_fields( 'as_cai_debug_settings' ); ?>
 						<?php $this->render_debug_settings(); ?>
@@ -564,12 +829,7 @@ class AS_CAI_Admin {
 					</div>
 				</form>
 
-				<!-- Updates Tab (No form - AJAX based) -->
-				<div x-show="activeTab === 'updates'" x-cloak style="padding: 24px;">
-					<?php $this->render_updates_tab(); ?>
-				</div>
-
-				<!-- Debug Tools Tab (No form - direct tools) -->
+				<!-- Debug Tools Tab -->
 				<div x-show="activeTab === 'debug_tools'" x-cloak style="padding: 24px; background: var(--as-gray-50);">
 					<?php
 					if ( class_exists( 'AS_CAI_Debug_Panel' ) ) {
@@ -577,10 +837,17 @@ class AS_CAI_Admin {
 					}
 					?>
 				</div>
+
+				<!-- Tests Tab -->
+				<div x-show="activeTab === 'tests'" x-cloak style="padding: 24px;">
+					<?php
+					if ( class_exists( 'AS_CAI_Test_Suite' ) ) {
+						AS_CAI_Test_Suite::instance()->render_page();
+					}
+					?>
+				</div>
 			</div>
 		</div>
-
-		<!-- Settings styles now in as-cai-admin.css -->
 		<?php
 	}
 

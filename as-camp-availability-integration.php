@@ -3,7 +3,7 @@
  * Plugin Name:       Camp Availability Integration
  * Plugin URI:        https://ayon.to
  * Description:       Integriert den Availability Scheduler Timer mit dem Stachethemes Seat Planner für Camp-Buchungen. Steuert die Anzeige des Parzellen-Auswahl-Buttons basierend auf dem Availability Timer. Inkl. 5-Minuten-Warenkorb-Reservierung und modernes Admin-Dashboard.
- * Version:           1.3.78
+ * Version:           1.3.79
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Author:            Marc Mirschel
@@ -41,7 +41,7 @@ final class AS_Camp_Availability_Integration {
      * @since 1.3.58
      * @var string
      */
-    const VERSION = '1.3.78';
+    const VERSION = '1.3.79';
 
 	/**
 	 * Plugin instance.
@@ -133,13 +133,13 @@ final class AS_Camp_Availability_Integration {
 		// Status Display System (v1.3.59)
 		require_once AS_CAI_PLUGIN_DIR . 'includes/class-as-cai-status-display.php';
 
-		// Shortcodes (v1.3.78)
+		// Shortcodes (v1.3.79)
 		require_once AS_CAI_PLUGIN_DIR . 'includes/class-as-cai-shortcodes.php';
 
-		// Roles (v1.3.78)
+		// Roles (v1.3.79)
 		require_once AS_CAI_PLUGIN_DIR . 'includes/class-as-cai-roles.php';
 
-		// Admin Reservations (v1.3.78)
+		// Admin Reservations (v1.3.79)
 		if ( is_admin() ) {
 			require_once AS_CAI_PLUGIN_DIR . 'includes/class-as-cai-admin-reservations.php';
 		}
@@ -209,7 +209,7 @@ final class AS_Camp_Availability_Integration {
 			AS_CAI_Test_Suite::instance();
 			// Initialize Booking Dashboard (v1.3.42)
 			AS_CAI_Booking_Dashboard::instance();
-			// Admin Reservations (v1.3.78)
+			// Admin Reservations (v1.3.79)
 			AS_CAI_Admin_Reservations::instance();
 		}
 
@@ -228,10 +228,10 @@ final class AS_Camp_Availability_Integration {
 		// Status Display System — v1.3.77: Dual-Source (Stachethemes Seat Plan + WC Stock).
 		AS_CAI_Status_Display::instance();
 
-		// Shortcodes (v1.3.78).
+		// Shortcodes (v1.3.79).
 		AS_CAI_Shortcodes::instance();
 
-		// Roles — Camp Manager (v1.3.78).
+		// Roles — Camp Manager (v1.3.79).
 		AS_CAI_Roles::instance();
 
 		// Initialize GitHub Auto-Updater (v1.3.59).

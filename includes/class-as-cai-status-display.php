@@ -751,12 +751,21 @@ class AS_CAI_Status_Display {
 			background: transparent;
 			border: none;
 			border-radius: 0;
-			box-shadow: none;
+			box-shadow: none !important;
 			padding: 0;
 			margin: 0;
 			display: flex;
 			flex-direction: column;
 			flex: 1;
+			animation: none !important;
+		}
+		/* Critical-Pulse in BuyBox: nur den Titel pulsieren */
+		.as-cai-buybox .status-critical .status-title {
+			animation: as-cai-buybox-title-pulse 2s ease-in-out infinite;
+		}
+		@keyframes as-cai-buybox-title-pulse {
+			0%, 100% { opacity: 1; }
+			50% { opacity: 0.6; }
 		}
 
 		/* Nativer WooCommerce / Stachethemes Add-to-Cart Button */

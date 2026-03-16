@@ -428,11 +428,20 @@ class AS_CAI_Frontend {
 			var $wcButton = $('form.cart .single_add_to_cart_button');
 			var $statusBox = $('.as-cai-status-box');
 
-			var $all = $wrapper.add($root).add($wcButton).add($statusBox);
+			var $buttons = $wrapper.add($root).add($wcButton);
+			var $all = $buttons.add($statusBox);
 			$all.removeClass('as-cai-button-hidden as-cai-button-visible');
 
 			<?php if ( $should_hide ) : ?>
-			$all.addClass('as-cai-button-hidden');
+			$buttons.addClass('as-cai-button-hidden');
+			// Status-Box nur verstecken wenn NICHT in einer BuyBox.
+			$statusBox.each(function() {
+				if (!$(this).closest('.as-cai-buybox').length) {
+					$(this).addClass('as-cai-button-hidden');
+				}
+			});
+			// Add-to-Cart Wrapper in BuyBox auch verstecken.
+			$('.as-cai-buybox .as-cai-add-to-cart-wrapper').hide();
 			<?php else : ?>
 			$wrapper.addClass('as-cai-button-visible').css('display', 'block');
 			$root.addClass('as-cai-button-visible').css('display', '');

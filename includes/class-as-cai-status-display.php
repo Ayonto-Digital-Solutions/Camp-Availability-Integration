@@ -54,6 +54,24 @@ class AS_CAI_Status_Display {
 
 		// Debug endpoint (admin only).
 		add_action( 'wp_ajax_as_cai_debug_status', array( $this, 'ajax_debug_status' ) );
+
+		// Stachethemes Button-Text kontextabhängig anpassen.
+		add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'filter_add_to_cart_text' ), 10, 2 );
+	}
+
+	/**
+	 * Filter: Button-Text anhand des Produktnamens anpassen.
+	 *
+	 * @param string     $text    Original button text.
+	 * @param WC_Product $product The product.
+	 * @return string
+	 */
+	public function filter_add_to_cart_text( $text, $product ) {
+		if ( ! $product ) {
+			return $text;
+		}
+		$unit_type = self::get_unit_type( $product );
+		return $unit_type['cta'];
 	}
 
 	/**
@@ -713,7 +731,7 @@ class AS_CAI_Status_Display {
 
 		/* Preis innerhalb Status-Box */
 		.as-cai-status-price {
-			font-size: 24px;
+			font-size: 28px;
 			font-weight: 700;
 			color: #B19E63;
 			margin-bottom: 16px;

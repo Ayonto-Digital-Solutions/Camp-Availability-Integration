@@ -272,7 +272,21 @@ class AS_CAI_Admin_Reservations {
 			'type'   => 'auditorium',
 			'limit'  => 50,
 			'status' => 'publish',
+			'orderby' => 'name',
+			'order'   => 'ASC',
 		) );
+
+		// Group products by category for the dropdown.
+		$products_by_category = array();
+		foreach ( $products as $p ) {
+			$categories = wp_get_post_terms( $p->get_id(), 'product_cat', array( 'fields' => 'names' ) );
+			$cat_name   = ! empty( $categories ) && ! is_wp_error( $categories ) ? implode( ', ', $categories ) : 'Ohne Kategorie';
+			if ( ! isset( $products_by_category[ $cat_name ] ) ) {
+				$products_by_category[ $cat_name ] = array();
+			}
+			$products_by_category[ $cat_name ][] = $p;
+		}
+		ksort( $products_by_category );
 
 		$active_reservations = self::get_active_reservations();
 		?>
@@ -294,10 +308,14 @@ class AS_CAI_Admin_Reservations {
 						</label>
 						<select id="res-product" style="width: 100%; padding: 8px 12px; border: 1px solid var(--as-gray-300, #ddd); border-radius: 6px; font-size: 14px;">
 							<option value="">Bitte wählen...</option>
-							<?php foreach ( $products as $p ) : ?>
-								<option value="<?php echo esc_attr( $p->get_id() ); ?>">
-									<?php echo esc_html( $p->get_name() ); ?> (#<?php echo esc_html( $p->get_id() ); ?>)
-								</option>
+							<?php foreach ( $products_by_category as $cat_name => $cat_products ) : ?>
+								<optgroup label="<?php echo esc_attr( $cat_name ); ?>">
+									<?php foreach ( $cat_products as $p ) : ?>
+										<option value="<?php echo esc_attr( $p->get_id() ); ?>">
+											<?php echo esc_html( $p->get_name() ); ?> (#<?php echo esc_html( $p->get_id() ); ?>)
+										</option>
+									<?php endforeach; ?>
+								</optgroup>
 							<?php endforeach; ?>
 						</select>
 					</div>
